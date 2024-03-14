@@ -22,7 +22,7 @@ struct LoginView: View {
                 .frame(width: 320, height: 20)
             Text("비밀번호")
                 .font(.system(size: 18, weight: .bold, design: .default))
-            TextField("비밀번호를 입력해주세요.", text: $Password)
+            SecureField("비밀번호를 입력해주세요.", text: $Password)
                 .textFieldStyle(.roundedBorder)
                 .frame(width: 320, height: 20)
         }
