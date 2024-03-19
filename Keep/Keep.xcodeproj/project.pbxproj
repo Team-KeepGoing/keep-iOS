@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4D85EBE92BA9A69200E2A399 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 4D85EBE82BA9A69200E2A399 /* Alamofire */; };
+		4D85EBEB2BA9A69200E2A399 /* AlamofireDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 4D85EBEA2BA9A69200E2A399 /* AlamofireDynamic */; };
 		4DD9FB682B9FD89800EF5DFC /* KeepApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD9FB672B9FD89800EF5DFC /* KeepApp.swift */; };
 		4DD9FB6A2B9FD89800EF5DFC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD9FB692B9FD89800EF5DFC /* ContentView.swift */; };
 		4DD9FB6C2B9FD89B00EF5DFC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4DD9FB6B2B9FD89B00EF5DFC /* Assets.xcassets */; };
@@ -32,6 +34,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D85EBE92BA9A69200E2A399 /* Alamofire in Frameworks */,
+				4D85EBEB2BA9A69200E2A399 /* AlamofireDynamic in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,6 +104,10 @@
 			dependencies = (
 			);
 			name = Keep;
+			packageProductDependencies = (
+				4D85EBE82BA9A69200E2A399 /* Alamofire */,
+				4D85EBEA2BA9A69200E2A399 /* AlamofireDynamic */,
+			);
 			productName = Keep;
 			productReference = 4DD9FB642B9FD89800EF5DFC /* Keep.app */;
 			productType = "com.apple.product-type.application";
@@ -128,6 +136,9 @@
 				Base,
 			);
 			mainGroup = 4DD9FB5B2B9FD89800EF5DFC;
+			packageReferences = (
+				4D85EBE72BA9A69200E2A399 /* XCRemoteSwiftPackageReference "Alamofire" */,
+			);
 			productRefGroup = 4DD9FB652B9FD89800EF5DFC /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -362,6 +373,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4D85EBE72BA9A69200E2A399 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.9.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4D85EBE82BA9A69200E2A399 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4D85EBE72BA9A69200E2A399 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		4D85EBEA2BA9A69200E2A399 /* AlamofireDynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4D85EBE72BA9A69200E2A399 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = AlamofireDynamic;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4DD9FB5C2B9FD89800EF5DFC /* Project object */;
 }
