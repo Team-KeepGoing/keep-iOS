@@ -15,7 +15,7 @@ struct ContentView: View {
                 .scaledToFit()
                 .frame(width:130)
             Text("대출/반납을 더욱 간편하게")
-                .font(.system(size:15,weight:.thin))
+                .font(.system(size:16,weight:.thin))
         }
         .padding(30)
         VStack {
