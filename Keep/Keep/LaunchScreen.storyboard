@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -16,27 +16,27 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo_3" translatesAutoresizingMaskIntoConstraints="NO" id="27R-Ic-Kgq">
-                                <rect key="frame" x="76" y="362" width="240" height="128"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo_3 1" translatesAutoresizingMaskIntoConstraints="NO" id="2dX-ev-8oO">
+                                <rect key="frame" x="96" y="373" width="200" height="106"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="27R-Ic-Kgq" secondAttribute="bottom" constant="328" id="A5a-Li-Osv"/>
-                            <constraint firstItem="27R-Ic-Kgq" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="303" id="Bgs-3a-Hsu"/>
-                            <constraint firstItem="27R-Ic-Kgq" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="76" id="Gkt-fF-PDd"/>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="27R-Ic-Kgq" secondAttribute="trailing" constant="77" id="uH5-Sm-UyO"/>
+                            <constraint firstItem="2dX-ev-8oO" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="314" id="Wm2-Kq-lgF"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="2dX-ev-8oO" secondAttribute="trailing" constant="97" id="gvd-KN-AYQ"/>
+                            <constraint firstItem="2dX-ev-8oO" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="96" id="mUw-WZ-Fcd"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="2dX-ev-8oO" secondAttribute="bottom" constant="339" id="pq8-sK-Qr0"/>
                         </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="127" y="4"/>
+            <point key="canvasLocation" x="125.95419847328243" y="3.5211267605633805"/>
         </scene>
     </scenes>
     <resources>
-        <image name="Logo_3" width="370" height="250"/>
+        <image name="Logo_3 1" width="407" height="169"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
