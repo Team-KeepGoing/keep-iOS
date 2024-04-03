@@ -25,4 +25,5 @@ extension Color {
 extension Color {
     static let keepcolor = Color(hex: "25357E")
     static let buttoncolor = Color(hex: "F2F3F5")
+    static let selbutton = Color(hex: "181F29")
 }

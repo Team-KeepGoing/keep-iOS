@@ -12,52 +12,40 @@ struct LoginView: View {
     @State private var Password: String = ""
     
     var body: some View {
-        Image("Logo_2")
+        Image("Logo")
+            .resizable()
+            .scaledToFit()
+            .frame(width:120)
             .padding(30)
-        VStack(alignment: .leading ,spacing: 20) {
-            Text("아이디")
-                .font(.system(size: 18, weight: .bold, design: .default))
-            TextField("아이디를 입력해주세요.", text: $ID)
-                .textFieldStyle(.roundedBorder)
-                .frame(width: 320, height: 20)
+        VStack(alignment: .leading) {
+            Text("이메일")
+                .bold()
+            Rectangle()
+                .frame(width: 300, height: 45)
+                .cornerRadius(10)
+                .foregroundColor(.buttoncolor)
             Text("비밀번호")
-                .font(.system(size: 18, weight: .bold, design: .default))
-            SecureField("비밀번호를 입력해주세요.", text: $Password)
-                .textFieldStyle(.roundedBorder)
-                .frame(width: 320, height: 20)
+                .bold()
+            Rectangle()
+                .frame(width: 300, height: 45)
+                .cornerRadius(10)
+                .foregroundColor(.buttoncolor)
         }
-        
-        HStack {
-            Button {
-                print(".")
-            } label: {
-                Text("비밀번호 찾기")
-                    .foregroundColor(.black)
-            }
-            Text("|")
-            Button {
-                print(".")
-            } label: {
-                Text("회원가입")
-                    .foregroundColor(.black)
-            }
-        }
-        .padding()
-        .padding(.leading, 150)
-        
+        .padding(30)
         Button {
-            print("..")
+            
         } label: {
-            ZStack {
-                RoundedRectangle(cornerRadius: 13)
-                    .frame(width:100,height: 40)
-                    .foregroundColor(.keepcolor)
-                Text("로그인")
-                    .foregroundColor(.white)
-                    .font(.system(size: 20, weight: .bold, design: .default))
-            }
+            Rectangle()
+                .frame(width: 110, height: 41)
+                .cornerRadius(15)
+                .foregroundColor(.selbutton)
+                .overlay {
+                    Text("완료")
+                        .font(.system(size: 18))
+                        .foregroundColor(.white)
+                        .bold()
+                }
         }
-        .padding()
     }
 }
 
