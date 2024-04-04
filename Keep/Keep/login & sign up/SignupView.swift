@@ -9,42 +9,93 @@ import SwiftUI
 
 struct SignupView: View {
     @State private var NewID: String = ""
+    @State private var NewName: String = ""
     @State private var NewPassword: String = ""
+    @State private var NewrePassword: String = ""
+    @State private var teacher: Bool = false
     
     var body: some View {
-        Image("Logo_2")
-            .padding(30)
-        VStack(alignment: .leading ,spacing: 20) {
-            Text("아이디")
-                .font(.system(size: 18, weight: .bold, design: .default))
-            TextField("아이디를 입력해주세요.", text: $NewID)
-                .textFieldStyle(.roundedBorder)
-                .frame(width: 320, height: 20)
+        VStack(alignment: .leading) {
+            VStack(alignment: .leading) {
+                Text("입력을 완료 하셨으면")
+                    .font(.system(size: 20))
+                    .bold()
+                Text("아래 확인 버튼을 눌러주세요.")
+                    .font(.system(size: 20))
+                    .bold()
+            }
+            
+            Spacer()
+                .frame(height:40)
+            
+            HStack {
+                Text("이메일")
+                    .bold()
+                Text("@dgsw.hs.kr 형식")
+                    .foregroundColor(.gray)
+                    .font(.system(size: 13, weight: .thin))
+            }
+            TextField("", text: $NewID)
+                .frame(width: 290,height:20)
+            Rectangle()
+                .frame(width:290,height:1)
+            
+            Spacer()
+                .frame(height:20)
+            
+            Text("이름")
+                .bold()
+            TextField("", text: $NewName)
+                .frame(width: 290,height:20)
+            Rectangle()
+                .frame(width:290,height:1)
+            
+            Spacer()
+                .frame(height:20)
+            
             Text("비밀번호")
-                .font(.system(size: 18, weight: .bold, design: .default))
-            SecureField("비밀번호를 입력해주세요.", text: $NewPassword)
-                .textFieldStyle(.roundedBorder)
-                .frame(width: 320, height: 20)
+                .bold()
+            SecureField("", text: $NewPassword)
+                .frame(width: 290,height:20)
+            Rectangle()
+                .frame(width:290,height:1)
+            
+            Spacer()
+                .frame(height:20)
+            
             Text("비밀번호 확인")
-                .font(.system(size: 18, weight: .bold, design: .default))
-            SecureField("비밀번호를 다시 입력해주세요.", text: $NewPassword)
-                .textFieldStyle(.roundedBorder)
-                .frame(width: 320, height: 20)
+                .bold()
+            SecureField("", text: $NewrePassword)
+                .frame(width: 290,height:20)
+            Rectangle()
+                .frame(width:290,height:1)
+        }
+        HStack() {
+            Spacer()
+                .frame(width: 130)
+            Text("교사인가요?")
+            Toggle(isOn: $teacher) {}
+                .frame(width:50)
         }
         
+        .padding()
+        Spacer()
+            .frame(height: 30)
+        
         Button {
-            print("..")
+            
         } label: {
-            ZStack {
-                RoundedRectangle(cornerRadius: 13)
-                    .frame(width:140,height: 40)
-                    .foregroundColor(.keepcolor)
-                Text("회원가입 완료")
-                    .foregroundColor(.white)
-                    .font(.system(size: 20, weight: .bold, design: .default))
-            }
+            Rectangle()
+                .frame(width: 110, height: 41)
+                .cornerRadius(15)
+                .foregroundColor(.selbutton)
+                .overlay {
+                    Text("완료")
+                        .font(.system(size: 18))
+                        .foregroundColor(.white)
+                        .bold()
+                }
         }
-        .padding(40)
     }
 }
 

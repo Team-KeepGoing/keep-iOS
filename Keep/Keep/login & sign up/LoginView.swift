@@ -16,7 +16,6 @@ struct LoginView: View {
             .resizable()
             .scaledToFit()
             .frame(width:120)
-            .padding(30)
         VStack(alignment: .leading) {
             Text("이메일")
                 .bold()
@@ -31,7 +30,7 @@ struct LoginView: View {
                 .cornerRadius(10)
                 .foregroundColor(.buttoncolor)
         }
-        .padding(30)
+        .padding(50)
         Button {
             
         } label: {
