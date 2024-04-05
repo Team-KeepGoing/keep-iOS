@@ -20,7 +20,7 @@ struct ContentView: View {
         .padding(30)
         VStack {
             Button(action: {
-                print("로그인")
+                
             }, label: {
                 Rectangle()
                     .foregroundColor(.buttoncolor)
@@ -33,7 +33,7 @@ struct ContentView: View {
                     )
             })
             Button(action: {
-                print("회원가입")
+
             }, label: {
                 Rectangle()
                     .foregroundColor(.buttoncolor)
