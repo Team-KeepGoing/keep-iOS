@@ -10,6 +10,7 @@
 		4D5E8B662BBEB80300912446 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5E8B652BBEB80300912446 /* HomeView.swift */; };
 		4D5E8B682BBEB82800912446 /* TabbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5E8B672BBEB82800912446 /* TabbarView.swift */; };
 		4D5E8B6B2BBEB9D900912446 /* TeacherHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5E8B6A2BBEB9D900912446 /* TeacherHomeView.swift */; };
+		4D5E8B6D2BC1981800912446 /* StudentInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5E8B6C2BC1981800912446 /* StudentInfoView.swift */; };
 		4D85EBE92BA9A69200E2A399 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 4D85EBE82BA9A69200E2A399 /* Alamofire */; };
 		4D85EBEB2BA9A69200E2A399 /* AlamofireDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 4D85EBEA2BA9A69200E2A399 /* AlamofireDynamic */; };
 		4D85EBEF2BB2A6DE00E2A399 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4D85EBEE2BB2A6DE00E2A399 /* LaunchScreen.storyboard */; };
@@ -26,6 +27,7 @@
 		4D5E8B652BBEB80300912446 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		4D5E8B672BBEB82800912446 /* TabbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarView.swift; sourceTree = "<group>"; };
 		4D5E8B6A2BBEB9D900912446 /* TeacherHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherHomeView.swift; sourceTree = "<group>"; };
+		4D5E8B6C2BC1981800912446 /* StudentInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentInfoView.swift; sourceTree = "<group>"; };
 		4D85EBEE2BB2A6DE00E2A399 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4D85EBF02BB2AAA400E2A399 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		4DD9FB642B9FD89800EF5DFC /* Keep.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Keep.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -55,6 +57,7 @@
 			isa = PBXGroup;
 			children = (
 				4D5E8B6A2BBEB9D900912446 /* TeacherHomeView.swift */,
+				4D5E8B6C2BC1981800912446 /* StudentInfoView.swift */,
 			);
 			path = Teacher;
 			sourceTree = "<group>";
@@ -194,6 +197,7 @@
 				4DD9FB792B9FD95100EF5DFC /* LoginView.swift in Sources */,
 				4DD9FB6A2B9FD89800EF5DFC /* ContentView.swift in Sources */,
 				4D5E8B662BBEB80300912446 /* HomeView.swift in Sources */,
+				4D5E8B6D2BC1981800912446 /* StudentInfoView.swift in Sources */,
 				4DD9FB682B9FD89800EF5DFC /* KeepApp.swift in Sources */,
 				4DD9FB7D2BA2724200EF5DFC /* ColorExtension.swift in Sources */,
 			);
