@@ -20,7 +20,7 @@ struct StudentInfoView: View {
             .font(.system(size: 25, weight: .bold))
             .offset(x: -115)
         Spacer()
-            .frame(height:50)
+            .frame(height:30)
         ZStack {
             Rectangle()
                 .frame(width:320,height:510)
