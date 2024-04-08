@@ -35,7 +35,6 @@ struct TabbarView: View {
                     Image(systemName: "person")
                     Text("MY")
                 }
-            
         }
     }
 }
