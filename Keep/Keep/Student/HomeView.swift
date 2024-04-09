@@ -36,7 +36,7 @@ struct HomeView: View {
                                 Text("도서 대출")
                                     .font(.system(size: 23, weight: .bold))
                                 Spacer()
-                                    .frame(width:160)
+                                    .frame(width:150)
                                 Button {
                                     
                                 } label: {
@@ -47,6 +47,28 @@ struct HomeView: View {
                                         .frame(width:20)
                                 }
                             }
+                            Button {
+                                
+                            } label: {
+                                Rectangle()
+                                    .foregroundColor(.buttoncolor)
+                                    .frame(width:125,height:35)
+                                    .cornerRadius(10)
+                                    .overlay(
+                                        Text("나의 대출 목록")
+                                            .foregroundColor(.black)
+                                            .font(.system(size: 17, weight: .semibold))
+                                    )
+                            }
+                            .padding(.leading,180)
+                            VStack(alignment: .leading) {
+                                Text("회원님이 대출중인 책")
+                                Text("미래의 사랑 이야기")
+                                    .font(.system(size: 15, weight: .thin))
+                                Text("화를 극복해내는 방법")
+                                    .font(.system(size: 15, weight: .thin))
+                            }
+                            .offset(x:-80,y:10)
                         }
                     )
                 Rectangle()
