@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct LendView: View {
+    @State private var LendUsing: String = "사용 중"
     var body: some View {
         VStack {
             Text("기기 대여")
@@ -27,7 +28,7 @@ struct LendView: View {
                                 .cornerRadius(7)
                                 .foregroundColor(.red)
                                 .overlay(
-                                    Text("사용 중")
+                                    Text(LendUsing)
                                         .foregroundColor(.white)
                                         .font(.system(size: 10, weight: .thin))
                                 )
