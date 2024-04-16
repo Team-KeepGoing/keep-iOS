@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct LendlistView: View {
+    @State private var LendName: String = "아이패드"
+    @State private var LendDate: String = "2024/04/13"
     var body: some View {
         VStack {
             Text("나의 대여 목록")
@@ -24,9 +26,9 @@ struct LendlistView: View {
                         .cornerRadius(15)
                         .overlay(
                             HStack(spacing: 120) {
-                                Text("아이패드")
+                                Text(LendName)
                                     .font(.system(size: 22, weight: .semibold))
-                                Text("2024/04/13")
+                                Text(LendDate)
                             }
                         )
                     Rectangle()
@@ -35,9 +37,9 @@ struct LendlistView: View {
                         .cornerRadius(15)
                         .overlay(
                             HStack(spacing: 120) {
-                                Text("아이패드")
+                                Text(LendName)
                                     .font(.system(size: 22, weight: .semibold))
-                                Text("2024/04/13")
+                                Text(LendDate)
                             }
                         )
                     Rectangle()
@@ -46,9 +48,9 @@ struct LendlistView: View {
                         .cornerRadius(15)
                         .overlay(
                             HStack(spacing: 120) {
-                                Text("아이패드")
+                                Text(LendName)
                                     .font(.system(size: 22, weight: .semibold))
-                                Text("2024/04/13")
+                                Text(LendDate)
                             }
                         )
                 }
