@@ -6,8 +6,12 @@
 //
 
 import SwiftUI
+import CoreImage.CIFilterBuiltins
 
 struct QrView: View {
+    
+    @State private var qrCodeImage: Image?
+    
     var body: some View {
         VStack(alignment: .leading) {
             Text("QR 대여")
@@ -22,6 +26,43 @@ struct QrView: View {
             .font(.system(size: 22, weight: .thin))
         }
         .padding(.trailing, 70)
+        
+        Spacer()
+            .frame(height:50)
+        
+        VStack {
+            if let qrCodeImage = qrCodeImage {
+                qrCodeImage
+                    .resizable()
+                    .interpolation(.none)
+                    .scaledToFit()
+                    .frame(width: 200, height: 200)
+            } else {
+                Text("QR 코드가 생성되지 않았습니다.")
+            }
+            
+            Button("QR 코드 생성") {
+                generateQRCode(from: "https://www.naver.com")
+            }
+            .padding()
+        }
+        Spacer()
+            .frame(height: 100)
+        
+    }
+    
+    func generateQRCode(from string: String) {
+        let filter = CIFilter.qrCodeGenerator() // QR 코드 생성 필터 생성
+        let data = Data(string.utf8) // 입력된 문자열을 데이터로 변환
+        filter.setValue(data, forKey: "inputMessage") // 필터에 데이터를 설정
+        
+        guard let ciImage = filter.outputImage else { return } // 필터에서 출력된 CIImage 가져오기
+        
+        let context = CIContext() // CIContext 생성
+        guard let cgImage = context.createCGImage(ciImage, from: ciImage.extent) else { return } // CIImage를 CGImage로 변환
+        
+        let uiImage = UIImage(cgImage: cgImage) // CGImage로부터 UIImage 생성
+        qrCodeImage = Image(uiImage: uiImage) // UIImage를 SwiftUI의 Image로 변환하여 저장
     }
 }
 
