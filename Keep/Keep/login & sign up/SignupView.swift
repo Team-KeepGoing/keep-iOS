@@ -6,9 +6,10 @@
 //
 
 import SwiftUI
+import Alamofire
 
 struct SignupView: View {
-    @State private var NewID: String = ""
+    @State private var NewEmail: String = ""
     @State private var NewName: String = ""
     @State private var NewPassword: String = ""
     @State private var NewrePassword: String = ""
@@ -35,7 +36,7 @@ struct SignupView: View {
                     .foregroundColor(.gray)
                     .font(.system(size: 13, weight: .thin))
             }
-            TextField("", text: $NewID)
+            TextField("", text: $NewEmail)
                 .frame(width: 290,height:20)
             Rectangle()
                 .frame(width:290,height:1)
@@ -83,7 +84,7 @@ struct SignupView: View {
             .frame(height: 30)
         
         Button {
-            
+            signUp()
         } label: {
             Rectangle()
                 .frame(width: 110, height: 41)
@@ -96,6 +97,25 @@ struct SignupView: View {
                         .bold()
                 }
         }
+    }
+    func signUp() {
+        let parameters: [String: Any] = [
+            "username": NewName,
+            "email": NewEmail,
+            "password": NewPassword
+        ]
+        AF.request("", method: .post, parameters: parameters, encoding: JSONEncoding.default)
+                .validate()
+                .responseJSON { response in
+                    switch response.result {
+                    case .success(let value):
+                        print("가입 성공: \(value)")
+                        // 가입 성공 응답 처리
+                    case .failure(let error):
+                        print("가입 실패: \(error)")
+                        // 가입 실패 처리
+                    }
+                }
     }
 }
 
