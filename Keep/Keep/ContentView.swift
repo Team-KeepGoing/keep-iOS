@@ -16,7 +16,7 @@ struct ContentView: View {
                     .scaledToFit()
                     .frame(width: 130)
                 Text("대출/반납을 더욱 간편하게")
-                    .font(.system(size: 16, weight: .thin))
+                    .font(.system(size: 20, weight: .light))
                 
                 Spacer()
                     .frame(height:40)
@@ -29,7 +29,7 @@ struct ContentView: View {
                             .cornerRadius(20)
                         Text("로그인")
                             .foregroundColor(.black)
-                            .font(.system(size: 30, weight: .bold, design: .default))
+                            .font(.system(size: 27, weight: .bold))
                     }
                 }
                 .padding(.bottom)
@@ -42,7 +42,7 @@ struct ContentView: View {
                             .cornerRadius(20)
                         Text("회원가입")
                             .foregroundColor(.black)
-                            .font(.system(size: 30, weight: .bold, design: .default))
+                            .font(.system(size: 27, weight: .bold))
                     }
                 }
             }

@@ -9,20 +9,20 @@ import SwiftUI
 import Alamofire
 
 struct SignupView: View {
-    @State private var email: String = ""
-    @State private var password: String = ""
-    @State private var repassword: String = ""
-    @State private var name: String = ""
+    @State private var NewEmail: String = ""
+    @State private var NewName: String = ""
+    @State private var NewPassword: String = ""
+    @State private var NewrePassword: String = ""
     @State private var teacher: Bool = false
     
     var body: some View {
         VStack(alignment: .leading) {
             VStack(alignment: .leading) {
                 Text("입력을 완료 하셨으면")
-                    .font(.system(size: 22,weight: .bold))
+                    .font(.system(size: 20))
                     .bold()
                 Text("아래 확인 버튼을 눌러주세요.")
-                    .font(.system(size: 22,weight: .bold))
+                    .font(.system(size: 20))
                     .bold()
             }
             
@@ -31,12 +31,12 @@ struct SignupView: View {
             
             HStack {
                 Text("이메일")
-                    .font(.system(size: 17,weight: .bold))
+                    .bold()
                 Text("@dgsw.hs.kr 형식")
                     .foregroundColor(.gray)
-                    .font(.system(size: 13, weight: .regular))
+                    .font(.system(size: 13, weight: .thin))
             }
-            TextField("", text: $email)
+            TextField("", text: $NewEmail)
                 .frame(width: 290,height:20)
             Rectangle()
                 .frame(width:290,height:1)
@@ -45,8 +45,8 @@ struct SignupView: View {
                 .frame(height:20)
             
             Text("이름")
-                .font(.system(size: 17,weight: .bold))
-            TextField("", text: $name)
+                .bold()
+            TextField("", text: $NewName)
                 .frame(width: 290,height:20)
             Rectangle()
                 .frame(width:290,height:1)
@@ -55,8 +55,8 @@ struct SignupView: View {
                 .frame(height:20)
             
             Text("비밀번호")
-                .font(.system(size: 17,weight: .bold))
-            SecureField("", text: $password)
+                .bold()
+            SecureField("", text: $NewPassword)
                 .frame(width: 290,height:20)
             Rectangle()
                 .frame(width:290,height:1)
@@ -65,8 +65,8 @@ struct SignupView: View {
                 .frame(height:20)
             
             Text("비밀번호 확인")
-                .font(.system(size: 17,weight: .bold))
-            SecureField("", text: $repassword)
+                .bold()
+            SecureField("", text: $NewrePassword)
                 .frame(width: 290,height:20)
             Rectangle()
                 .frame(width:290,height:1)
@@ -75,7 +75,6 @@ struct SignupView: View {
             Spacer()
                 .frame(width: 130)
             Text("교사인가요?")
-                .font(.system(size: 18,weight: .light))
             Toggle(isOn: $teacher) {}
                 .frame(width:50)
         }
@@ -85,7 +84,7 @@ struct SignupView: View {
             .frame(height: 30)
         
         Button {
-
+            signUp()
         } label: {
             Rectangle()
                 .frame(width: 110, height: 41)
@@ -98,6 +97,25 @@ struct SignupView: View {
                         .bold()
                 }
         }
+    }
+    func signUp() {
+        let parameters: [String: Any] = [
+            "username": NewName,
+            "email": NewEmail,
+            "password": NewPassword
+        ]
+        AF.request("", method: .post, parameters: parameters, encoding: JSONEncoding.default)
+                .validate()
+                .responseJSON { response in
+                    switch response.result {
+                    case .success(let value):
+                        print("가입 성공: \(value)")
+                        // 가입 성공 응답 처리
+                    case .failure(let error):
+                        print("가입 실패: \(error)")
+                        // 가입 실패 처리
+                    }
+                }
     }
 }
 
