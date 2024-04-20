@@ -9,10 +9,10 @@ import SwiftUI
 import Alamofire
 
 struct SignupView: View {
-    @State private var NewEmail: String = ""
-    @State private var NewName: String = ""
-    @State private var NewPassword: String = ""
-    @State private var NewrePassword: String = ""
+    @State private var email: String = ""
+    @State private var name: String = ""
+    @State private var password: String = ""
+    @State private var repassword: String = ""
     @State private var teacher: Bool = false
     
     var body: some View {
@@ -36,7 +36,7 @@ struct SignupView: View {
                     .foregroundColor(.gray)
                     .font(.system(size: 13, weight: .thin))
             }
-            TextField("", text: $NewEmail)
+            TextField("", text: $email)
                 .frame(width: 290,height:20)
             Rectangle()
                 .frame(width:290,height:1)
@@ -46,7 +46,7 @@ struct SignupView: View {
             
             Text("이름")
                 .bold()
-            TextField("", text: $NewName)
+            TextField("", text: $name)
                 .frame(width: 290,height:20)
             Rectangle()
                 .frame(width:290,height:1)
@@ -56,7 +56,7 @@ struct SignupView: View {
             
             Text("비밀번호")
                 .bold()
-            SecureField("", text: $NewPassword)
+            SecureField("", text: $password)
                 .frame(width: 290,height:20)
             Rectangle()
                 .frame(width:290,height:1)
@@ -66,7 +66,7 @@ struct SignupView: View {
             
             Text("비밀번호 확인")
                 .bold()
-            SecureField("", text: $NewrePassword)
+            SecureField("", text: $repassword)
                 .frame(width: 290,height:20)
             Rectangle()
                 .frame(width:290,height:1)
@@ -84,7 +84,7 @@ struct SignupView: View {
             .frame(height: 30)
         
         Button {
-            signUp()
+            sendDataToServer()
         } label: {
             Rectangle()
                 .frame(width: 110, height: 41)
@@ -98,25 +98,31 @@ struct SignupView: View {
                 }
         }
     }
-    func signUp() {
-        let parameters: [String: Any] = [
-            "username": NewName,
-            "email": NewEmail,
-            "password": NewPassword
-        ]
-        AF.request("", method: .post, parameters: parameters, encoding: JSONEncoding.default)
-                .validate()
-                .responseJSON { response in
-                    switch response.result {
-                    case .success(let value):
-                        print("가입 성공: \(value)")
-                        // 가입 성공 응답 처리
-                    case .failure(let error):
-                        print("가입 실패: \(error)")
-                        // 가입 실패 처리
-                    }
-                }
+    func sendDataToServer() {
+        let signupData = SignupData(email: email, password: password, name: name)
+        sendSignupRequest(signupData: signupData)
     }
+    
+    func sendSignupRequest(signupData: SignupData) {
+        let url = "http://18.117.7.146/user/signup"
+
+        AF.request(url, method: .post, parameters: signupData, encoder: JSONParameterEncoder.default)
+            .validate()
+            .responseJSON { response in
+                switch response.result {
+                case .success(let value):
+                    print("Request succeeded: \(value)")
+                case .failure(let error):
+                    print("Request failed: \(error)")
+                }
+            }
+    }
+}
+
+struct SignupData: Encodable {
+    let email: String
+    let password: String
+    let name: String
 }
 
 #Preview {
