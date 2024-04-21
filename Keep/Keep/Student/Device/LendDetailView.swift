@@ -11,7 +11,7 @@ struct LendDetailView: View {
     var body: some View {
         Text("기기 대여")
             .font(.system(size: 28, weight: .semibold))
-            .offset(x:-100,y:-120)
+            .offset(x:-100,y:-90)
         VStack(spacing:10) {
             Image("macbook")
                 .resizable()
@@ -28,10 +28,22 @@ struct LendDetailView: View {
                         .foregroundColor(.white)
                         .font(.system(size: 11, weight: .regular))
                 )
-            Text("2024/04/06 부터 대여가능")
-                .font(.system(size: 16, weight: .regular))
+            Spacer()
+                .frame(height:120)
+            Button {
+                
+            } label: {
+                Rectangle()
+                    .frame(width:230,height: 45)
+                    .cornerRadius(12)
+                    .foregroundColor(.lendbutton)
+                    .overlay(
+                        Text("대여하기")
+                            .font(.system(size: 19, weight: .medium))
+                            .foregroundColor(.white)
+                    )
+            }
         }
-        .padding(.bottom,50)
     }
 }
 
