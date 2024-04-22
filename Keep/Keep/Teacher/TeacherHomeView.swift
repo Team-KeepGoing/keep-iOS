@@ -23,8 +23,19 @@ struct TeacherHomeView: View {
                 .font(.system(size: 25, weight: .semibold))
             Spacer()
                 .frame(height:30)
-            TextField("", text: $StSearch)
-                .frame(width: 320,height:20)
+            HStack {
+                TextField("이름을 입력해주세요.", text: $StSearch)
+                    .frame(width: 280,height:20)
+                Button {
+                    
+                } label: {
+                    Image(systemName: "magnifyingglass")
+                        .resizable()
+                        .scaledToFit()
+                        .foregroundColor(.black)
+                        .frame(width:30)
+                }
+            }
             Rectangle()
                 .frame(width:325,height:2)
             Spacer()
