@@ -8,6 +8,19 @@
 import SwiftUI
 import Alamofire
 
+// 회원가입 요청 데이터를 나타내는 모델
+struct SignupData: Encodable {
+    let email: String
+    let password: String
+    let name: String
+}
+
+// 회원가입 응답 데이터를 나타내는 모델
+struct SignupResponse: Codable {
+    let success: Bool
+    let message: String?
+}
+
 struct SignupView: View {
     @State private var email: String = ""
     @State private var name: String = ""
@@ -98,6 +111,7 @@ struct SignupView: View {
                 }
         }
     }
+    
     func sendDataToServer() {
         let signupData = SignupData(email: email, password: password, name: name)
         sendSignupRequest(signupData: signupData)
@@ -108,21 +122,15 @@ struct SignupView: View {
 
         AF.request(url, method: .post, parameters: signupData, encoder: JSONParameterEncoder.default)
             .validate()
-            .responseJSON { response in
+            .responseDecodable(of: SignupResponse.self) { response in
                 switch response.result {
-                case .success(let value):
-                    print("Request succeeded: \(value)")
+                case .success(let signupResponse):
+                    print("Signup succeeded: \(signupResponse)")
                 case .failure(let error):
-                    print("Request failed: \(error)")
+                    print("Signup failed: \(error)")
                 }
             }
     }
-}
-
-struct SignupData: Encodable {
-    let email: String
-    let password: String
-    let name: String
 }
 
 #Preview {
