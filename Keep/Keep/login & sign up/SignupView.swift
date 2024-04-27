@@ -12,6 +12,7 @@ struct SignupData: Encodable {
     let email: String
     let password: String
     let name: String
+    let teacher: Bool
 }
 
 struct SignupResponse: Codable {
@@ -119,7 +120,6 @@ struct SignupView: View {
                         .opacity(0)
                 )
             }
-            .navigationBarHidden(true)
         }
         .onChange(of: signupSuccess) { newValue in
             if newValue {
@@ -129,7 +129,7 @@ struct SignupView: View {
     }
     
     func sendDataToServer() {
-        let signupData = SignupData(email: email, password: password, name: name)
+        let signupData = SignupData(email: email, password: password, name: name, teacher: teacher)
         sendSignupRequest(signupData: signupData)
     }
     
