@@ -13,42 +13,44 @@ struct QrView: View {
     @State private var qrCodeImage: Image?
     
     var body: some View {
-        VStack(alignment: .leading) {
-            Text("QR 대여")
-                .font(.system(size: 28, weight: .semibold))
-            Spacer()
-                .frame(height:30)
-            VStack(alignment: .leading) {
-                Text("도서관에 배치 되어 있는")
-                Text("QR코드 인식기에")
-                Text("QR을 인식해주세요!")
-            }
-            .font(.system(size: 22, weight: .thin))
-        }
-        .padding(.trailing, 70)
-        
-        Spacer()
-            .frame(height:50)
-        
         VStack {
-            if let qrCodeImage = qrCodeImage {
-                qrCodeImage
-                    .resizable()
-                    .interpolation(.none)
-                    .scaledToFit()
-                    .frame(width: 200, height: 200)
-            } else {
-                Text("QR 코드가 생성되지 않았습니다.")
+            VStack(alignment: .leading) {
+                Text("QR 대여")
+                    .font(.system(size: 28, weight: .semibold))
+                Spacer()
+                    .frame(height:30)
+                VStack(alignment: .leading) {
+                    Text("도서관에 배치 되어 있는")
+                    Text("QR코드 인식기에")
+                    Text("QR을 인식해주세요!")
+                }
+                .font(.system(size: 22, weight: .thin))
             }
+            .padding(.trailing, 70)
             
-            Button("QR 코드 생성") {
-                generateQRCode(from: "https://www.naver.com")
+            Spacer()
+                .frame(height:50)
+            
+            VStack {
+                if let qrCodeImage = qrCodeImage {
+                    qrCodeImage
+                        .resizable()
+                        .interpolation(.none)
+                        .scaledToFit()
+                        .frame(width: 200, height: 200)
+                } else {
+                    Text("QR 코드가 생성되지 않았습니다.")
+                }
+                
+                Button("QR 코드 생성") {
+                    generateQRCode(from: "https://www.naver.com")
+                }
+                .padding()
             }
-            .padding()
+            Spacer()
+                .frame(height: 100)
+            
         }
-        Spacer()
-            .frame(height: 100)
-        
     }
     
     func generateQRCode(from string: String) {
