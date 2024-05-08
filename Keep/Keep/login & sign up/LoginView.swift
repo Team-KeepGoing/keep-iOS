@@ -14,7 +14,7 @@ struct LoginView: View {
     @State private var isLoggedIn: Bool = false
     
     var body: some View {
-        NavigationView { // NavigationView로 둘러싸서 네비게이션을 사용합니다.
+        NavigationView {
             VStack {
                 Image("Logo")
                     .resizable()
