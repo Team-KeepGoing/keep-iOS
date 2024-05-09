@@ -44,7 +44,7 @@ struct LoginView: View {
                 }
                 .padding(50)
                 Button(action: {
-                    AF.request("http://52.79.143.148:8080/user/signin", method: .post, parameters: ["email": self.email, "password": self.password])
+                    AF.request("http://www.mhaa.kr:18091/user/signin", method: .post, parameters: ["email": self.email, "password": self.password], encoding: JSONEncoding.default)
                         .responseJSON { response in
                             switch response.result {
                             case .success(let value):
@@ -54,7 +54,6 @@ struct LoginView: View {
                                 print(error)
                             }
                         }
-
                 }) {
                     Rectangle()
                         .frame(width: 110, height: 41)
@@ -71,7 +70,7 @@ struct LoginView: View {
                     NavigationLink(destination: TabbarView(), isActive: $isLoggedIn) {
                         EmptyView()
                     }
-                    .hidden()
+                        .hidden()
                 )
             }
         }

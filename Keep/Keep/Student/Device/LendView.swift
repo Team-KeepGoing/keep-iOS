@@ -7,12 +7,11 @@
 
 import SwiftUI
 
-import SwiftUI
-
-struct ELend: View {
-    var image: String
-    var title: String
-    var lendStatus: String
+struct LendStatusView: View {
+    
+    @State public var image: String = "macbook"
+    @State public var title: String = "노트북"
+    @State public var lendStatus: String = "사용중"
     
     var body: some View {
         NavigationLink(destination: LendDetailView()) {
@@ -41,7 +40,7 @@ struct ELend: View {
 }
 
 struct LendView: View {
-    @State private var lendUsing: String = "사용 중"
+    @State private var lendUsing: String = "사용중"
     var body: some View {
         NavigationView {
             VStack {
@@ -50,8 +49,8 @@ struct LendView: View {
                     .padding(.trailing,200)
                 ScrollView {
                     VStack(alignment: .leading, spacing:10) {
-                        ELend(image: "macbook", title: "노트북", lendStatus: lendUsing)
-                        ELend(image: "macbook", title: "노트북", lendStatus: lendUsing)
+                        LendStatusView(image: "macbook", title: "노트북", lendStatus: lendUsing)
+                        LendStatusView(image: "macbook", title: "노트북", lendStatus: lendUsing)
                     }
                     .padding(.trailing,100)
                 }
