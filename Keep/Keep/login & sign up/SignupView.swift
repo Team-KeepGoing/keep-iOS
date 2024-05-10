@@ -134,7 +134,7 @@ struct SignupView: View {
     }
     
     func sendSignupRequest(signupData: SignupData) {
-        let url = "http://www.mhaa.kr:18091/user/signup"
+        let url = ""
         
         AF.request(url, method: .post, parameters: signupData, encoder: JSONParameterEncoder.default)
             .validate()

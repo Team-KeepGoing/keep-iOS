@@ -13,6 +13,10 @@ struct LoginView: View {
     @State private var password: String = ""
     @State private var isLoggedIn: Bool = false
     
+    var signUpAPI: String? {
+        ProcessInfo.processInfo.environment["USER_SIGNIN_API"]
+    }
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -44,12 +48,21 @@ struct LoginView: View {
                 }
                 .padding(50)
                 Button(action: {
-                    AF.request("http://www.mhaa.kr:18091/user/signin", method: .post, parameters: ["email": self.email, "password": self.password], encoding: JSONEncoding.default)
+                    guard let signUpAPI = signUpAPI, let url = URL(string: signUpAPI) else {
+                                            print("Invalid API Key")
+                                            return
+                                        }
+                    AF.request(signUpAPI, method: .post, parameters: ["email": self.email, "password": self.password], encoding: JSONEncoding.default)
                         .responseJSON { response in
                             switch response.result {
                             case .success(let value):
-                                print("JSON: \(value)")
-                                isLoggedIn = true
+                                if let statusCode = response.response?.statusCode, statusCode == 401 {
+                                    isLoggedIn = false
+                                    print("JSON: \(value)")
+                                } else {
+                                    isLoggedIn = true
+                                    print("JSON: \(value)")
+                                }
                             case .failure(let error):
                                 print(error)
                             }
@@ -70,7 +83,7 @@ struct LoginView: View {
                     NavigationLink(destination: TabbarView(), isActive: $isLoggedIn) {
                         EmptyView()
                     }
-                        .hidden()
+                    .hidden()
                 )
             }
         }
