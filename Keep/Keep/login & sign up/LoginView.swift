@@ -13,10 +13,6 @@ struct LoginView: View {
     @State private var password: String = ""
     @State private var isLoggedIn: Bool = false
     
-    var signUpAPI: String? {
-        ProcessInfo.processInfo.environment["USER_SIGNIN_API"]
-    }
-    
     var body: some View {
         NavigationView {
             VStack {
@@ -48,11 +44,7 @@ struct LoginView: View {
                 }
                 .padding(50)
                 Button(action: {
-                    guard let signUpAPI = signUpAPI, let url = URL(string: signUpAPI) else {
-                                            print("Invalid API Key")
-                                            return
-                                        }
-                    AF.request(signUpAPI, method: .post, parameters: ["email": self.email, "password": self.password], encoding: JSONEncoding.default)
+                    AF.request("http://3.34.2.12:8080/user/signin", method: .post, parameters: ["email": self.email, "password": self.password], encoding: JSONEncoding.default)
                         .responseJSON { response in
                             switch response.result {
                             case .success(let value):
