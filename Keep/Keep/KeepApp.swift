@@ -9,9 +9,20 @@ import SwiftUI
 
 @main
 struct KeepApp: App {
+    let tokenManager = TokenManager.shared
+    
     var body: some Scene {
         WindowGroup {
-            LoginView()
+            ContentView()
+                .environmentObject(tokenManager)
         }
     }
 }
+
+
+//let headers: HTTPHeaders = ["Authorization": "Bearer \(TokenManager.shared.token ?? "")"]
+
+//AF.request("YOUR_API_ENDPOINT", headers: headers)
+    //.responseJSON { response in
+        // 응답 처리 코드...
+//}

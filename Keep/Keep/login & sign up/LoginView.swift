@@ -51,7 +51,8 @@ struct LoginView: View {
                                 if let statusCode = response.response?.statusCode, statusCode == 401 {
                                     isLoggedIn = false
                                     print("JSON: \(value)")
-                                } else {
+                                } else if let json = value as? [String: Any], let token = json["token"] as? String {
+                                    TokenManager.shared.token = token
                                     isLoggedIn = true
                                     print("JSON: \(value)")
                                 }
@@ -79,6 +80,21 @@ struct LoginView: View {
                 )
             }
         }
+    }
+}
+
+class TokenManager: ObservableObject {
+    static let shared = TokenManager()
+    private let userDefaults = UserDefaults.standard
+    
+    @Published var token: String? {
+        didSet {
+            userDefaults.set(token, forKey: "token")
+        }
+    }
+    
+    private init() {
+        self.token = userDefaults.string(forKey: "token")
     }
 }
 
