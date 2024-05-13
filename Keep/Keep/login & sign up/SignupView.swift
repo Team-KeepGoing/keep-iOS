@@ -134,9 +134,7 @@ struct SignupView: View {
     }
     
     func sendSignupRequest(signupData: SignupData) {
-        let url = ""
-        
-        AF.request(url, method: .post, parameters: signupData, encoder: JSONParameterEncoder.default)
+        AF.request("http://3.34.2.12:8080/user/signup", method: .post, parameters: signupData, encoder: JSONParameterEncoder.default)
             .validate()
             .responseDecodable(of: SignupResponse.self) { response in
                 switch response.result {
