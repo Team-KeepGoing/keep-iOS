@@ -12,6 +12,7 @@ struct LoginView: View {
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var isLoggedIn: Bool = false
+    @State private var isTeacher: Bool = false
     
     var body: some View {
         NavigationView {
@@ -51,9 +52,10 @@ struct LoginView: View {
                                 if let statusCode = response.response?.statusCode, statusCode == 401 {
                                     isLoggedIn = false
                                     print("JSON: \(value)")
-                                } else if let json = value as? [String: Any], let token = json["token"] as? String {
+                                } else if let json = value as? [String: Any], let token = json["token"] as? String, let teacher = json["teacher"] as? Int {
                                     TokenManager.shared.token = token
                                     isLoggedIn = true
+                                    isTeacher = teacher == 1
                                     print("JSON: \(value)")
                                 }
                             case .failure(let error):
@@ -73,7 +75,13 @@ struct LoginView: View {
                         }
                 }
                 .background(
-                    NavigationLink(destination: TabbarView(), isActive: $isLoggedIn) {
+                    NavigationLink(destination: {
+                        if isTeacher {
+                            return AnyView(TeacherHomeView())
+                        } else {
+                            return AnyView(TabbarView())
+                        }
+                    }(), isActive: $isLoggedIn) {
                         EmptyView()
                     }
                     .hidden()
