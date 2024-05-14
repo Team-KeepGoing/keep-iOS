@@ -28,6 +28,7 @@ struct SignupView: View {
     @State private var teacher: Bool = false
     @State private var signupSuccess: Bool = false
     @State private var navigateToHome: Bool = false
+    @State private var showingAlert: Bool = false
     
     var body: some View {
         NavigationView {
@@ -100,7 +101,11 @@ struct SignupView: View {
                     .frame(height: 30)
                 
                 Button {
-                    sendDataToServer()
+                    if password == repassword {
+                        sendDataToServer()
+                    } else {
+                        self.showingAlert.toggle()
+                    }
                 } label: {
                     Rectangle()
                         .frame(width: 110, height: 41)
@@ -113,6 +118,11 @@ struct SignupView: View {
                                 .bold()
                         }
                 }
+                .alert(isPresented: $showingAlert) {
+                            Alert(title: Text("비밀번호와 비밀번호 확인이 일치하지 않습니다."), message: nil,
+                                  dismissButton: .default(Text("확인")))
+                        }
+                
                 .background(
                     NavigationLink(destination: TabbarView(), isActive: $navigateToHome) {
                         EmptyView()
