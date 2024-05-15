@@ -6,29 +6,40 @@
 //
 
 import SwiftUI
+import Alamofire
+
+struct DeviceData: Codable {
+    let httpStatus: String
+    let message: String
+    let data: [Device]
+}
+
+struct Device: Codable, Identifiable {
+    let id: Int
+    let status: Int
+    let deviceName: String
+    let imgUrl: String?
+}
 
 struct LendStatusView: View {
-    
-    @State public var image: String = "macbook"
-    @State public var title: String = "노트북"
-    @State public var lendStatus: String = "사용중"
+    var device: Device
     
     var body: some View {
         NavigationLink(destination: LendDetailView()) {
             HStack {
-                Image(image)
+                Image(systemName: device.status == 2 ? "laptopcomputer.and.iphone" : "laptopcomputer")
                     .resizable()
                     .frame(width: 64, height: 64)
                 VStack(alignment:.leading, spacing:3) {
-                    Text(title)
+                    Text(device.deviceName)
                         .font(.system(size: 20, weight: .bold))
                         .foregroundColor(.black)
                     Rectangle()
                         .frame(width:45,height:15)
                         .cornerRadius(7)
-                        .foregroundColor(.red)
+                        .foregroundColor(device.status == 2 ? .red : .green)
                         .overlay(
-                            Text(lendStatus)
+                            Text(device.status == 2 ? "사용중" : "미사용")
                                 .foregroundColor(.white)
                                 .font(.system(size: 10, weight: .thin))
                         )
@@ -40,7 +51,9 @@ struct LendStatusView: View {
 }
 
 struct LendView: View {
-    @State private var lendUsing: String = "사용중"
+    @State private var devices: [Device] = []
+    @State private var errorMessage: String?
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -49,8 +62,9 @@ struct LendView: View {
                     .padding(.trailing,200)
                 ScrollView {
                     VStack(alignment: .leading, spacing:10) {
-                        LendStatusView(image: "macbook", title: "노트북", lendStatus: lendUsing)
-                        LendStatusView(image: "macbook", title: "노트북", lendStatus: lendUsing)
+                        ForEach(devices) { device in
+                            LendStatusView(device: device)
+                        }
                     }
                     .padding(.trailing,100)
                 }
@@ -58,6 +72,20 @@ struct LendView: View {
             }
             .navigationBarTitle("")
             .navigationBarHidden(true)
+            .onAppear {
+                fetchData()
+            }
+        }
+    }
+    
+    func fetchData() {
+        AF.request("http://3.34.2.12:8080/device/list", method: .get).responseDecodable(of: DeviceData.self) { response in
+            switch response.result {
+            case .success(let deviceData):
+                self.devices = deviceData.data
+            case .failure(let error):
+                self.errorMessage = "Network request failed: \(error.localizedDescription)"
+            }
         }
     }
 }
@@ -66,3 +94,4 @@ struct LendView: View {
 #Preview {
     LendView()
 }
+

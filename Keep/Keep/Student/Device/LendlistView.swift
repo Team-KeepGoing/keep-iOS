@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Alamofire
 
 struct LendItemView: View {
     var lendName: String
