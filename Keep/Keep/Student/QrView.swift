@@ -43,7 +43,11 @@ struct QrView: View {
                 }
                 
                 Button("QR 코드 생성") {
-                    generateQRCode(from: "https://www.naver.com")
+                    if let email = UserDefaults.standard.string(forKey: "email") {
+                        generateQRCode(from: email)
+                    } else {
+                        print("이메일이 저장되어 있지 않습니다.")
+                    }
                 }
                 .padding()
             }

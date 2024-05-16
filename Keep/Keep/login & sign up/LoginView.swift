@@ -57,6 +57,7 @@ struct LoginView: View {
                                     isLoggedIn = true
                                     isTeacher = teacher == 1
                                     print("JSON: \(value)")
+                                    UserDefaults.standard.set(email, forKey: "email")
                                 }
                             case .failure(let error):
                                 print(error)
