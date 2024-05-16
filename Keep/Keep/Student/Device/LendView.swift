@@ -27,7 +27,7 @@ struct LendStatusView: View {
     var body: some View {
         NavigationLink(destination: LendDetailView()) {
             HStack {
-                Image(systemName: device.status == 2 ? "laptopcomputer.and.iphone" : "laptopcomputer")
+                Image("macbook")
                     .resizable()
                     .frame(width: 64, height: 64)
                 VStack(alignment:.leading, spacing:3) {
@@ -37,7 +37,7 @@ struct LendStatusView: View {
                     Rectangle()
                         .frame(width:45,height:15)
                         .cornerRadius(7)
-                        .foregroundColor(device.status == 2 ? .red : .green)
+                        .foregroundColor(device.status == 2 ? .red : .blue)
                         .overlay(
                             Text(device.status == 2 ? "사용중" : "미사용")
                                 .foregroundColor(.white)
