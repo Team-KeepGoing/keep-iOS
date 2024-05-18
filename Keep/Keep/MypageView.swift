@@ -17,6 +17,8 @@ struct MypageView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width:112)
+                Spacer()
+                    .frame(width:20)
                 VStack(alignment: .leading, spacing:10) {
                     Text("김주환")
                         .font(.system(size: 24, weight: .semibold))
@@ -25,6 +27,31 @@ struct MypageView: View {
                     Text("010-3852-4644")
                         .font(.system(size: 18, weight: .light))
                 }
+            }
+        }
+        .padding(.trailing,30)
+        Spacer()
+            .frame(height: 30)
+        VStack {
+            Text("회원님이 대출중인 책")
+                .font(.system(size: 15, weight: .semibold))
+                .padding(.trailing, 170)
+            HStack{
+                ScrollView{
+                    
+                }
+                .frame(height: 200)
+            }
+        }
+        VStack {
+            Text("회원님이 대여중인 기자재")
+                .font(.system(size: 15, weight: .semibold))
+                .padding(.trailing, 150)
+            HStack{
+                ScrollView{
+                    
+                }
+                .frame(height: 170)
             }
         }
     }
