@@ -42,12 +42,38 @@ struct MypageView: View {
                     Text("회원님이 대출중인 책")
                         .font(.system(size: 15, weight: .semibold))
                         .padding(.trailing, 170)
-                    HStack{
-                        ScrollView{
-                            
+                    ScrollView{
+                        HStack {
+                            Image("book1")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width:100)
+                                .padding(.bottom, 30)
+                            Image("book1")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width:100)
+                                .padding(.bottom, 30)
+                            Image("book1")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width:100)
+                                .padding(.bottom, 30)
+                            Image("book1")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width:100)
+                                .padding(.bottom, 30)
                         }
-                        .frame(height: 200)
                     }
+                    .frame(height: 170)
+                }
+                Button {
+                    
+                } label: {
+                    Text("나의 대출 목록 확인")
+                        .font(.system(size: 13, weight: .medium))
+                        .padding(.leading,220)
                 }
                 VStack {
                     Text("회원님이 대여중인 기자재")
