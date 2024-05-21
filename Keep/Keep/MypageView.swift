@@ -42,7 +42,7 @@ struct MypageView: View {
                     Text("회원님이 대출중인 책")
                         .font(.system(size: 15, weight: .semibold))
                         .padding(.trailing, 170)
-                    ScrollView{
+                    ScrollView(.horizontal) {
                         HStack {
                             Image("book1")
                                 .resizable()

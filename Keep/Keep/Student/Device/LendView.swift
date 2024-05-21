@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Alamofire
+import SDWebImageSwiftUI
 
 struct DeviceData: Codable {
     let httpStatus: String
@@ -27,15 +28,23 @@ struct LendStatusView: View {
     var body: some View {
         NavigationLink(destination: LendDetailView()) {
             HStack {
-                Image("macbook")
-                    .resizable()
-                    .frame(width: 64, height: 64)
-                VStack(alignment:.leading, spacing:3) {
+                if let imgUrl = device.imgUrl, let url = URL(string: imgUrl) {
+                    WebImage(url: url)
+                        .resizable()
+                        .frame(width: 64, height: 64)
+                        .cornerRadius(8)
+                } else {
+                    Image("placeholder")
+                        .resizable()
+                        .frame(width: 64, height: 64)
+                        .cornerRadius(8)
+                }
+                VStack(alignment: .leading, spacing: 3) {
                     Text(device.deviceName)
                         .font(.system(size: 20, weight: .bold))
                         .foregroundColor(.black)
                     Rectangle()
-                        .frame(width:45,height:15)
+                        .frame(width: 45, height: 15)
                         .cornerRadius(7)
                         .foregroundColor(device.status == 2 ? .red : .blue)
                         .overlay(
@@ -45,7 +54,7 @@ struct LendStatusView: View {
                         )
                 }
             }
-            .padding(.trailing,100)
+            .padding(.trailing, 100)
         }
     }
 }
@@ -59,16 +68,16 @@ struct LendView: View {
             VStack {
                 Text("기기 대여")
                     .font(.system(size: 28, weight: .bold))
-                    .padding(.trailing,200)
+                    .padding(.trailing, 200)
                 ScrollView {
-                    VStack(alignment: .leading, spacing:10) {
+                    VStack(alignment: .leading, spacing: 10) {
                         ForEach(devices) { device in
                             LendStatusView(device: device)
                         }
                     }
-                    .padding(.trailing,100)
+                    .padding(.trailing, 100)
                 }
-                .frame(height:600)
+                .frame(height: 600)
             }
             .navigationBarTitle("")
             .navigationBarHidden(true)
@@ -79,17 +88,32 @@ struct LendView: View {
     }
     
     func fetchData() {
-        AF.request("http://3.34.2.12:8080/device/list", method: .get).responseDecodable(of: DeviceData.self) { response in
+        AF.request("http://3.34.2.12:8080/device/list", method: .get).responseJSON { response in
             switch response.result {
-            case .success(let deviceData):
-                self.devices = deviceData.data
+            case .success(let value):
+                if let json = value as? [String: Any] {
+                    // JSON 데이터를 처리합니다.
+                    if let dataArray = json["data"] as? [[String: Any]] {
+                        // JSON 데이터를 직접 다룹니다.
+                        for data in dataArray {
+                            if let id = data["id"] as? Int,
+                               let status = data["status"] as? Int,
+                               let deviceName = data["deviceName"] as? String,
+                               let imgUrl = data["imgUrl"] as? String? {
+                                // 여기에서 데이터를 처리합니다.
+                                let device = Device(id: id, status: status, deviceName: deviceName, imgUrl: imgUrl)
+                                devices.append(device)
+                            }
+                        }
+                    }
+                }
             case .failure(let error):
+                print("Network request failed: \(error.localizedDescription)")
                 self.errorMessage = "Network request failed: \(error.localizedDescription)"
             }
         }
     }
 }
-
 
 #Preview {
     LendView()
