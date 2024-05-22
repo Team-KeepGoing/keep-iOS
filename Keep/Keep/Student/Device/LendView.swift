@@ -43,6 +43,7 @@ struct LendStatusView: View {
                     Text(device.deviceName)
                         .font(.system(size: 20, weight: .bold))
                         .foregroundColor(.black)
+                    
                     Rectangle()
                         .frame(width: 45, height: 15)
                         .cornerRadius(7)
@@ -53,8 +54,10 @@ struct LendStatusView: View {
                                 .font(.system(size: 10, weight: .thin))
                         )
                 }
+                
+                Spacer()
             }
-            .padding(.trailing, 100)
+            .padding(.horizontal, 20)
         }
     }
 }
@@ -75,7 +78,7 @@ struct LendView: View {
                             LendStatusView(device: device)
                         }
                     }
-                    .padding(.trailing, 100)
+                    
                 }
                 .frame(height: 600)
             }
@@ -92,15 +95,12 @@ struct LendView: View {
             switch response.result {
             case .success(let value):
                 if let json = value as? [String: Any] {
-                    // JSON 데이터를 처리합니다.
                     if let dataArray = json["data"] as? [[String: Any]] {
-                        // JSON 데이터를 직접 다룹니다.
                         for data in dataArray {
                             if let id = data["id"] as? Int,
                                let status = data["status"] as? Int,
                                let deviceName = data["deviceName"] as? String,
                                let imgUrl = data["imgUrl"] as? String? {
-                                // 여기에서 데이터를 처리합니다.
                                 let device = Device(id: id, status: status, deviceName: deviceName, imgUrl: imgUrl)
                                 devices.append(device)
                             }
