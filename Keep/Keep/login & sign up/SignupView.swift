@@ -27,7 +27,6 @@ struct SignupView: View {
     @State private var repassword: String = ""
     @State private var teacher: Bool = false
     @State private var signupSuccess: Bool = false
-    @State private var navigateToHome: Bool = false
     @State private var showingAlert: Bool = false
     
     var body: some View {
@@ -44,7 +43,7 @@ struct SignupView: View {
                     }
                     
                     Spacer()
-                        .frame(height:40)
+                        .frame(height: 40)
                     
                     HStack {
                         Text("이메일")
@@ -54,49 +53,49 @@ struct SignupView: View {
                             .font(.system(size: 13, weight: .thin))
                     }
                     TextField("", text: $email)
-                        .frame(width: 290,height:20)
+                        .frame(width: 290, height: 20)
                     Rectangle()
-                        .frame(width:290,height:1)
+                        .frame(width: 290, height: 1)
                     
                     Spacer()
-                        .frame(height:20)
+                        .frame(height: 20)
                     
                     Text("이름")
                         .bold()
                     TextField("", text: $name)
-                        .frame(width: 290,height:20)
+                        .frame(width: 290, height: 20)
                     Rectangle()
-                        .frame(width:290,height:1)
+                        .frame(width: 290, height: 1)
                     
                     Spacer()
-                        .frame(height:20)
+                        .frame(height: 20)
                     
                     Text("비밀번호")
                         .bold()
                     SecureField("", text: $password)
-                        .frame(width: 290,height:20)
+                        .frame(width: 290, height: 20)
                     Rectangle()
-                        .frame(width:290,height:1)
+                        .frame(width: 290, height: 1)
                     
                     Spacer()
-                        .frame(height:20)
+                        .frame(height: 20)
                     
                     Text("비밀번호 확인")
                         .bold()
                     SecureField("", text: $repassword)
-                        .frame(width: 290,height:20)
+                        .frame(width: 290, height: 20)
                     Rectangle()
-                        .frame(width:290,height:1)
+                        .frame(width: 290, height: 1)
                 }
-                HStack() {
+                HStack {
                     Spacer()
                         .frame(width: 130)
                     Text("교사인가요?")
                     Toggle(isOn: $teacher) {}
-                        .frame(width:50)
+                        .frame(width: 50)
                 }
-                
                 .padding()
+                
                 Spacer()
                     .frame(height: 30)
                 
@@ -119,21 +118,13 @@ struct SignupView: View {
                         }
                 }
                 .alert(isPresented: $showingAlert) {
-                            Alert(title: Text("비밀번호와 비밀번호 확인이 일치하지 않습니다."), message: nil,
-                                  dismissButton: .default(Text("확인")))
-                        }
+                    Alert(title: Text("비밀번호와 비밀번호 확인이 일치하지 않습니다."), message: nil, dismissButton: .default(Text("확인")))
+                }
                 
-                .background(
-                    NavigationLink(destination: TabbarView(), isActive: $navigateToHome) {
-                        EmptyView()
-                    }
-                        .opacity(0)
-                )
-            }
-        }
-        .onChange(of: signupSuccess) { newValue in
-            if newValue {
-                navigateToHome = true
+                NavigationLink(destination: destinationView(), isActive: $signupSuccess) {
+                    EmptyView()
+                }
+                .hidden()
             }
         }
     }
@@ -159,6 +150,15 @@ struct SignupView: View {
                     print("회원가입 실패: \(error)")
                 }
             }
+    }
+    
+    @ViewBuilder
+    func destinationView() -> some View {
+        if teacher {
+            TeacherHomeView()
+        } else {
+            TabbarView()
+        }
     }
 }
 
