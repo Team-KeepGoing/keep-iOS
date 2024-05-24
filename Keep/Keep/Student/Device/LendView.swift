@@ -91,7 +91,7 @@ struct LendView: View {
     }
     
     func fetchData() {
-        AF.request("http://3.34.2.12:8080/device/list", method: .get).responseJSON { response in
+        AF.request(Storage().devicelistapiKey, method: .get).responseJSON { response in
             switch response.result {
             case .success(let value):
                 if let json = value as? [String: Any] {

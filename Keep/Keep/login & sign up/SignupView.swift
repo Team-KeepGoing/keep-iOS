@@ -18,6 +18,12 @@ struct SignupData: Encodable {
 struct SignupResponse: Codable {
     let success: Bool
     let message: String?
+    let data: SignupResponseData?
+
+    struct SignupResponseData: Codable {
+        let token: String?
+        let teacher: Bool?
+    }
 }
 
 struct SignupView: View {
@@ -28,6 +34,7 @@ struct SignupView: View {
     @State private var teacher: Bool = false
     @State private var signupSuccess: Bool = false
     @State private var showingAlert: Bool = false
+    @State private var isTeacher: Bool = false
     
     var body: some View {
         NavigationView {
@@ -127,6 +134,7 @@ struct SignupView: View {
                 .hidden()
             }
         }
+        .navigationBarBackButtonHidden(true)
     }
     
     func sendDataToServer() {
@@ -135,13 +143,22 @@ struct SignupView: View {
     }
     
     func sendSignupRequest(signupData: SignupData) {
-        AF.request("http://3.34.2.12:8080/user/signup", method: .post, parameters: signupData, encoder: JSONParameterEncoder.default)
+        AF.request(Storage().signupapiKey, method: .post, parameters: signupData, encoder: JSONParameterEncoder.default)
             .validate()
             .responseDecodable(of: SignupResponse.self) { response in
                 switch response.result {
                 case .success(let signupResponse):
                     if signupResponse.success {
                         print("회원가입 성공: \(signupResponse)")
+                        if let data = signupResponse.data {
+                            if let token = data.token {
+                                TokenManager.shared.token = token
+                                debugPrint("토큰 저장됨: \(token)")
+                            }
+                            if let isTeacher = data.teacher {
+                                self.isTeacher = isTeacher
+                            }
+                        }
                         self.signupSuccess = true
                     } else {
                         print("회원가입 실패: \(signupResponse.message ?? "Unknown error")")
@@ -154,7 +171,7 @@ struct SignupView: View {
     
     @ViewBuilder
     func destinationView() -> some View {
-        if teacher {
+        if isTeacher {
             TeacherHomeView()
         } else {
             TabbarView()

@@ -45,7 +45,7 @@ struct LoginView: View {
                 }
                 .padding(50)
                 Button(action: {
-                    AF.request("http://3.34.2.12:8080/user/signin", method: .post, parameters: ["email": self.email, "password": self.password], encoding: JSONEncoding.default)
+                    AF.request(Storage().loginapiKey, method: .post, parameters: ["email": self.email, "password": self.password], encoding: JSONEncoding.default)
                         .responseJSON { response in
                             switch response.result {
                             case .success(let value):
@@ -89,21 +89,7 @@ struct LoginView: View {
                 )
             }
         }
-    }
-}
-
-class TokenManager: ObservableObject {
-    static let shared = TokenManager()
-    private let userDefaults = UserDefaults.standard
-    
-    @Published var token: String? {
-        didSet {
-            userDefaults.set(token, forKey: "token")
-        }
-    }
-    
-    private init() {
-        self.token = userDefaults.string(forKey: "token")
+        .navigationBarBackButtonHidden(true)
     }
 }
 

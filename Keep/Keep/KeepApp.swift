@@ -13,7 +13,8 @@ struct KeepApp: App {
     
     var body: some Scene {
         WindowGroup {
-            LendView()
+            ContentView()
+                .environmentObject(TokenManager.shared)
         }
     }
 }
