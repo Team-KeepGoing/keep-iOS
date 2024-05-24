@@ -6,8 +6,50 @@
 //
 
 import SwiftUI
+import Alamofire
+
+
+struct UserInfo: Codable {
+    let email: String
+    let name: String
+}
+
+class UserInfoViewModel: ObservableObject {
+    @Published var responseData: String = "Loading..."
+    @Published var userInfo: UserInfo?
+    
+    func fetchUserInfo(token: String) {
+        let headers: HTTPHeaders = [
+            "Authorization": "Bearer \(token)"
+        ]
+        
+        AF.request(Storage().userinfoapiKey, method: .get, headers: headers).responseData { response in
+            switch response.result {
+            case .success(let data):
+                do {
+                    let userInfo = try JSONDecoder().decode(UserInfo.self, from: data)
+                    DispatchQueue.main.async {
+                        self.userInfo = userInfo
+                    }
+                } catch {
+                    DispatchQueue.main.async {
+                        self.responseData = "Failed to decode JSON: \(error.localizedDescription)"
+                    }
+                }
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    self.responseData = "Error: \(error.localizedDescription)"
+                }
+            }
+        }
+    }
+}
 
 struct MypageView: View {
+    
+    @EnvironmentObject var tokenManager: TokenManager
+    @StateObject private var viewModel = UserInfoViewModel()
+    
     var body: some View {
         VStack {
             VStack(alignment: .leading) {
@@ -21,16 +63,22 @@ struct MypageView: View {
                     Spacer()
                         .frame(width:20)
                     VStack(alignment: .leading, spacing:10) {
-                        Text("김주환")
-                            .font(.system(size: 24, weight: .semibold))
-                        Text("2학년 2반 8번")
-                            .font(.system(size: 18, weight: .light))
-                        Text("010-3852-4644")
-                            .font(.system(size: 18, weight: .light))
+                        if let userInfo = viewModel.userInfo {
+                            Text(userInfo.name)
+                                .font(.system(size: 24, weight: .semibold))
+                                .frame(maxWidth: 100, alignment: .leading)
+                            Text(userInfo.email)
+                                .font(.system(size: 18, weight: .light))
+                                .frame(maxWidth: 200, alignment: .leading)
+                        } else {
+                            Text("Loading...")
+                                .font(.system(size: 24, weight: .semibold))
+                                .font(.system(size: 18, weight: .light))
+                        }
                     }
                 }
             }
-            .padding(.trailing,30)
+            .offset(x:10)
             Spacer()
                 .frame(height: 30)
             ZStack {
@@ -104,12 +152,16 @@ struct MypageView: View {
                     }
                 }
             }
-            
             .padding()
+        }
+        .onAppear {
+            if let token = tokenManager.token {
+                viewModel.fetchUserInfo(token: token)
+            }
         }
     }
 }
 
 #Preview {
-    MypageView()
+    MypageView().environmentObject(TokenManager.shared)
 }
