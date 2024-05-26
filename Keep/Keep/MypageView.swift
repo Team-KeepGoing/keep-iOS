@@ -146,9 +146,9 @@ struct MypageView: View {
                     Button {
                         
                     } label: {
-                        Text("나의 대출 목록 확인")
+                        Text("나의 기자재 대여 목록 확인")
                             .font(.system(size: 13, weight: .medium))
-                            .padding(.leading,220)
+                            .padding(.leading,175)
                     }
                 }
             }
