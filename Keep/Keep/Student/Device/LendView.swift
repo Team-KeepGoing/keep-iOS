@@ -24,9 +24,9 @@ struct Device: Codable, Identifiable {
 
 struct LendStatusView: View {
     var device: Device
-    
+
     var body: some View {
-        NavigationLink(destination: LendDetailView()) {
+        NavigationLink(destination: LendDetailView(deviceName: device.deviceName, imgUrl: device.imgUrl, status: device.status)) {
             HStack {
                 if let imgUrl = device.imgUrl, let url = URL(string: imgUrl) {
                     WebImage(url: url)
@@ -49,7 +49,7 @@ struct LendStatusView: View {
                         .cornerRadius(7)
                         .foregroundColor(device.status == 2 ? .red : .blue)
                         .overlay(
-                            Text(device.status == 2 ? "사용중" : "미사용")
+                            Text(device.status == 2 ? "사용중" : "대여 가능")
                                 .foregroundColor(.white)
                                 .font(.system(size: 10, weight: .thin))
                         )
@@ -65,7 +65,7 @@ struct LendStatusView: View {
 struct LendView: View {
     @State private var devices: [Device] = []
     @State private var errorMessage: String?
-    
+
     var body: some View {
         NavigationView {
             VStack {
@@ -89,22 +89,24 @@ struct LendView: View {
             }
         }
     }
-    
+
     func fetchData() {
         AF.request(Storage().devicelistapiKey, method: .get).responseJSON { response in
             switch response.result {
             case .success(let value):
-                if let json = value as? [String: Any] {
-                    if let dataArray = json["data"] as? [[String: Any]] {
-                        for data in dataArray {
-                            if let id = data["id"] as? Int,
-                               let status = data["status"] as? Int,
-                               let deviceName = data["deviceName"] as? String,
-                               let imgUrl = data["imgUrl"] as? String? {
-                                let device = Device(id: id, status: status, deviceName: deviceName, imgUrl: imgUrl)
-                                devices.append(device)
-                            }
+                if let json = value as? [String: Any], let dataArray = json["data"] as? [[String: Any]] {
+                    var fetchedDevices = [Device]()
+                    for data in dataArray {
+                        if let id = data["id"] as? Int,
+                           let status = data["status"] as? Int,
+                           let deviceName = data["deviceName"] as? String,
+                           let imgUrl = data["imgUrl"] as? String? {
+                            let device = Device(id: id, status: status, deviceName: deviceName, imgUrl: imgUrl)
+                            fetchedDevices.append(device)
                         }
+                    }
+                    DispatchQueue.main.async {
+                        self.devices = fetchedDevices
                     }
                 }
             case .failure(let error):
@@ -118,4 +120,5 @@ struct LendView: View {
 #Preview {
     LendView()
 }
+
 

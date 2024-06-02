@@ -18,9 +18,9 @@ struct DeviceModel: Identifiable, Codable {
 
 struct LendStatusViewModel: View {
     var device: DeviceModel
-    
+
     var body: some View {
-        NavigationLink(destination: LendDetailView()) {
+        NavigationLink(destination: LendDetailView(deviceName: device.deviceName, imgUrl: device.imgUrl, status: device.status)) {
             HStack {
                 if let imgUrl = device.imgUrl, let url = URL(string: imgUrl) {
                     WebImage(url: url)
@@ -55,6 +55,7 @@ struct LendStatusViewModel: View {
         }
     }
 }
+
 
 struct HomeView: View {
     @State private var devices: [DeviceModel] = []
@@ -203,5 +204,4 @@ struct HomeView: View {
 #Preview {
     HomeView()
 }
-
 
