@@ -21,7 +21,6 @@
 		4D5E8B7A2BC380EE00912446 /* MypageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5E8B792BC380EE00912446 /* MypageView.swift */; };
 		4D5E8B7C2BCD430A00912446 /* LendDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5E8B7B2BCD430A00912446 /* LendDetailView.swift */; };
 		4D85EBE92BA9A69200E2A399 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 4D85EBE82BA9A69200E2A399 /* Alamofire */; };
-		4D85EBEB2BA9A69200E2A399 /* AlamofireDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 4D85EBEA2BA9A69200E2A399 /* AlamofireDynamic */; };
 		4D97A8F02BF306D70054A39D /* testView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D97A8EF2BF306D60054A39D /* testView.swift */; };
 		4DAFFD572BFF56ED00B77B87 /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DAFFD562BFF56ED00B77B87 /* TokenManager.swift */; };
 		4DD9FB682B9FD89800EF5DFC /* KeepApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD9FB672B9FD89800EF5DFC /* KeepApp.swift */; };
@@ -66,7 +65,6 @@
 			files = (
 				4D20F9AC2BFC994B003FD0EA /* SDWebImageSwiftUI in Frameworks */,
 				4D85EBE92BA9A69200E2A399 /* Alamofire in Frameworks */,
-				4D85EBEB2BA9A69200E2A399 /* AlamofireDynamic in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -176,7 +174,6 @@
 			name = Keep;
 			packageProductDependencies = (
 				4D85EBE82BA9A69200E2A399 /* Alamofire */,
-				4D85EBEA2BA9A69200E2A399 /* AlamofireDynamic */,
 				4D20F9AB2BFC994B003FD0EA /* SDWebImageSwiftUI */,
 			);
 			productName = Keep;
@@ -389,6 +386,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Keep/Preview Content\"";
+				DEVELOPMENT_TEAM = ZTJ578GV68;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Keep/Info.plist;
@@ -418,6 +416,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Keep/Preview Content\"";
+				DEVELOPMENT_TEAM = ZTJ578GV68;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Keep/Info.plist;
@@ -491,11 +490,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4D85EBE72BA9A69200E2A399 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
-		};
-		4D85EBEA2BA9A69200E2A399 /* AlamofireDynamic */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4D85EBE72BA9A69200E2A399 /* XCRemoteSwiftPackageReference "Alamofire" */;
-			productName = AlamofireDynamic;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

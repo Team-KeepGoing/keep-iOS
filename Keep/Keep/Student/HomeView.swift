@@ -51,7 +51,7 @@ struct LendStatusViewModel: View {
                 
                 Spacer()
             }
-            .padding(.horizontal, 20)
+            .padding(.horizontal,80)
         }
     }
 }

@@ -23,6 +23,6 @@ struct KeepApp: App {
 //let headers: HTTPHeaders = ["Authorization": "Bearer \(TokenManager.shared.token ?? "")"]
 
 //AF.request("YOUR_API_ENDPOINT", headers: headers)
-    //.responseJSON { response in
-        // 응답 처리 코드...
+//.responseJSON { response in
+// 응답 처리 코드...
 //}
