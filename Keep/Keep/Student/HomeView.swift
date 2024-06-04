@@ -18,7 +18,7 @@ struct DeviceModel: Identifiable, Codable {
 
 struct LendStatusViewModel: View {
     var device: DeviceModel
-
+    
     var body: some View {
         NavigationLink(destination: LendDetailView(deviceName: device.deviceName, imgUrl: device.imgUrl, status: device.status)) {
             HStack {
@@ -60,7 +60,7 @@ struct LendStatusViewModel: View {
 struct HomeView: View {
     @State private var devices: [DeviceModel] = []
     @State private var errorMessage: String?
-
+    
     var body: some View {
         NavigationView {
             ZStack {
@@ -118,10 +118,15 @@ struct HomeView: View {
                                 VStack(alignment: .leading) {
                                     Text("회원님이 대출중인 책")
                                         .bold()
-                                    Text("미래의 사랑 이야기")
-                                        .font(.system(size: 15, weight: .thin))
-                                    Text("화를 극복해내는 방법")
-                                        .font(.system(size: 15, weight: .thin))
+                                    ScrollView {
+                                        VStack(alignment: .leading,spacing: 8) {
+                                            Text("미래의 사랑 이야기")
+                                                .font(.system(size: 15, weight: .thin))
+                                            Text("화를 극복해내는 방법")
+                                                .font(.system(size: 15, weight: .thin))
+                                        }
+                                    }
+                                    .frame(height:40)
                                 }
                                 .offset(x: -80, y: 10)
                                 
@@ -174,7 +179,7 @@ struct HomeView: View {
             }
         }
     }
-
+    
     func fetchData() {
         AF.request(Storage().devicelistapiKey, method: .get).responseJSON { response in
             switch response.result {
