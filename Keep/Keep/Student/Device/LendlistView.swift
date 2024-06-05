@@ -30,6 +30,8 @@ struct LendItemView: View {
 struct LendlistView: View {
     @State private var lendItems = [
         ("아이패드", "2024/04/13"),
+        ("아이패드", "2024/04/13"),
+        ("아이패드", "2024/04/13"),
     ]
     
     var body: some View {

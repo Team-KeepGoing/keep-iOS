@@ -138,7 +138,7 @@ struct MypageView: View {
                             .padding(.trailing, 150)
                         HStack{
                             ScrollView{
-                                
+
                             }
                             .frame(height: 80)
                         }
