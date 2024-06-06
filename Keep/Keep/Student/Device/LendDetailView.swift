@@ -32,15 +32,6 @@ struct LendDetailView: View {
                 }
                 Text(deviceName)
                     .font(.system(size: 27, weight: .semibold))
-                Rectangle()
-                    .frame(width: 60, height: 20)
-                    .cornerRadius(9)
-                    .foregroundColor(status == 2 ? .red : .blue)
-                    .overlay(
-                        Text(status == 2 ? "사용 중" : "대여 가능")
-                            .foregroundColor(.white)
-                            .font(.system(size: 11, weight: .regular))
-                    )
 
                 Spacer()
                     .frame(height: 120)
