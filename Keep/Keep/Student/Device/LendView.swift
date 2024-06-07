@@ -47,9 +47,9 @@ struct LendStatusView: View {
                     Rectangle()
                         .frame(width: 45, height: 15)
                         .cornerRadius(7)
-                        .foregroundColor(device.status == 2 ? .red : .blue)
+                        .foregroundColor(device.status == 1 ? .red : .blue)
                         .overlay(
-                            Text(device.status == 2 ? "사용중" : "대여 가능")
+                            Text(device.status == 1 ? "사용중" : "대여 가능")
                                 .foregroundColor(.white)
                                 .font(.system(size: 10, weight: .thin))
                         )

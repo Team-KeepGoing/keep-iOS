@@ -39,9 +39,9 @@ struct LendDetailView: View {
                 Rectangle()
                     .frame(width: 230, height: 45)
                     .cornerRadius(12)
-                    .foregroundColor(status == 2 ? .red : .blue)
+                    .foregroundColor(status == 1 ? .red : .blue)
                     .overlay(
-                        Text(status == 2 ? "사용 중" : "미사용")
+                        Text(status == 1 ? "사용 중" : "대여 가능")
                             .font(.system(size: 19, weight: .medium))
                             .foregroundColor(.white)
                     )
