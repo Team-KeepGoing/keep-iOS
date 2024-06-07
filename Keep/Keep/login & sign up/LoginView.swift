@@ -13,10 +13,42 @@ struct LoginView: View {
     @State private var password: String = ""
     @State private var isLoggedIn: Bool = false
     @State private var isTeacher: Bool = false
+    @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
         NavigationView {
             VStack {
+                ZStack {
+                    Image("loginsign")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width:316,height:208)
+                        .offset()
+                    VStack {
+                        Button(action: {
+                            presentationMode.wrappedValue.dismiss()
+                        }) {
+                            HStack {
+                                Image(systemName: "chevron.backward")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width:13)
+                                    .foregroundColor(.white)
+                                    .padding(3)
+                                Text("뒤로가기")
+                                    .font(.system(size: 18, weight: .medium))
+                                    .foregroundColor(.white)
+                            }
+                        }
+                        Text("로그인")
+                            .font(.system(size: 28, weight: .bold))
+                            .foregroundColor(.white)
+                    }
+                    .offset(x:-50,y:10)
+                }
+                .offset(x:-70,y:-150)
+                .frame(height:70)
+                
                 Image("Logo")
                     .resizable()
                     .scaledToFit()
@@ -85,7 +117,7 @@ struct LoginView: View {
                     }(), isActive: $isLoggedIn) {
                         EmptyView()
                     }
-                    .hidden()
+                        .hidden()
                 )
             }
         }

@@ -90,7 +90,7 @@ struct MypageView: View {
                     VStack {
                         Text("회원님이 대출중인 책")
                             .font(.system(size: 15, weight: .semibold))
-                            .padding(.trailing, 170)
+                            .padding(.trailing, 190)
                         ScrollView(.horizontal) {
                             HStack {
                                 Image("book1")
@@ -135,7 +135,7 @@ struct MypageView: View {
                     VStack {
                         Text("회원님이 대여중인 기자재")
                             .font(.system(size: 15, weight: .semibold))
-                            .padding(.trailing, 150)
+                            .padding(.trailing, 170)
                         HStack{
                             ScrollView{
 

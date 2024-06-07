@@ -35,10 +35,42 @@ struct SignupView: View {
     @State private var signupSuccess: Bool = false
     @State private var showingAlert: Bool = false
     @State private var isTeacher: Bool = false
+    @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
         NavigationView {
             VStack {
+                ZStack {
+                    Image("loginsign")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width:316,height:208)
+                        .offset()
+                    VStack {
+                        Button(action: {
+                            presentationMode.wrappedValue.dismiss()
+                        }) {
+                            HStack {
+                                Image(systemName: "chevron.backward")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width:13)
+                                    .foregroundColor(.white)
+                                    .padding(3)
+                                Text("뒤로가기")
+                                    .font(.system(size: 18, weight: .medium))
+                                    .foregroundColor(.white)
+                            }
+                        }
+                        Text("회원가입")
+                            .font(.system(size: 28, weight: .bold))
+                            .foregroundColor(.white)
+                    }
+                    .offset(x:-50,y:10)
+                }
+                .offset(x:-70,y:-80)
+                .frame(height:150)
+                
                 VStack(alignment: .leading) {
                     VStack(alignment: .leading) {
                         Text("입력을 완료 하셨으면")
