@@ -88,6 +88,7 @@ struct LendView: View {
                 fetchData()
             }
         }
+        .navigationBarBackButtonHidden(true)
     }
 
     func fetchData() {
