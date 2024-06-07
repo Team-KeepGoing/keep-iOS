@@ -178,6 +178,7 @@ struct SignupView: View {
         AF.request(Storage().signupapiKey, method: .post, parameters: signupData, encoder: JSONParameterEncoder.default)
             .validate()
             .responseDecodable(of: SignupResponse.self) { response in
+                debugPrint(response)
                 switch response.result {
                 case .success(let signupResponse):
                     if signupResponse.success {
@@ -191,6 +192,7 @@ struct SignupView: View {
                                 self.isTeacher = isTeacher
                             }
                         }
+                        UserDefaults.standard.set(email, forKey: "email")
                         self.signupSuccess = true
                     } else {
                         print("회원가입 실패: \(signupResponse.message ?? "Unknown error")")
