@@ -17,7 +17,7 @@ struct DeviceData: Codable {
 
 struct Device: Codable, Identifiable {
     let id: Int
-    let status: Int
+    let status: Bool
     let deviceName: String
     let imgUrl: String?
 }
@@ -47,9 +47,9 @@ struct LendStatusView: View {
                     Rectangle()
                         .frame(width: 45, height: 15)
                         .cornerRadius(7)
-                        .foregroundColor(device.status == 1 ? .red : .blue)
+                        .foregroundColor(device.status ? .red : .blue)
                         .overlay(
-                            Text(device.status == 1 ? "사용중" : "대여 가능")
+                            Text(device.status ? "사용중" : "대여 가능")
                                 .foregroundColor(.white)
                                 .font(.system(size: 10, weight: .thin))
                         )
@@ -99,7 +99,7 @@ struct LendView: View {
                     var fetchedDevices = [Device]()
                     for data in dataArray {
                         if let id = data["id"] as? Int,
-                           let status = data["status"] as? Int,
+                           let status = data["status"] as? Bool,
                            let deviceName = data["deviceName"] as? String,
                            let imgUrl = data["imgUrl"] as? String? {
                             let device = Device(id: id, status: status, deviceName: deviceName, imgUrl: imgUrl)

@@ -159,7 +159,6 @@ struct MypageView: View {
         }
     }
 }
-
 #Preview {
     MypageView().environmentObject(TokenManager.shared)
 }

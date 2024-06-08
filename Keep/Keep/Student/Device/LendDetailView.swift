@@ -11,7 +11,7 @@ import SDWebImageSwiftUI
 struct LendDetailView: View {
     let deviceName: String
     let imgUrl: String?
-    let status: Int
+    let status: Bool
 
     var body: some View {
         VStack {
@@ -39,9 +39,9 @@ struct LendDetailView: View {
                 Rectangle()
                     .frame(width: 230, height: 45)
                     .cornerRadius(12)
-                    .foregroundColor(status == 1 ? .red : .blue)
+                    .foregroundColor(status ? .red : .blue)
                     .overlay(
-                        Text(status == 1 ? "사용 중" : "대여 가능")
+                        Text(status ? "사용 중" : "대여 가능")
                             .font(.system(size: 19, weight: .medium))
                             .foregroundColor(.white)
                     )
@@ -52,5 +52,5 @@ struct LendDetailView: View {
 }
 
 #Preview {
-    LendDetailView(deviceName: "노트북", imgUrl: nil, status: 1)
+    LendDetailView(deviceName: "노트북", imgUrl: nil, status: true)
 }

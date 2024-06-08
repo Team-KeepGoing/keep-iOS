@@ -4,14 +4,13 @@
 //
 //  Created by bibiga on 4/4/24.
 //
-
 import SwiftUI
 import Alamofire
 import SDWebImageSwiftUI
 
 struct DeviceModel: Identifiable, Codable {
     let id: Int
-    let status: Int
+    let status: Bool
     let deviceName: String
     let imgUrl: String?
 }
@@ -41,9 +40,9 @@ struct LendStatusViewModel: View {
                     Rectangle()
                         .frame(width: 45, height: 15)
                         .cornerRadius(7)
-                        .foregroundColor(device.status == 1 ? .red : .blue)
+                        .foregroundColor(device.status ? .red : .blue)
                         .overlay(
-                            Text(device.status == 1 ? "사용중" : "대여 가능")
+                            Text(device.status ? "사용중" : "대여 가능")
                                 .foregroundColor(.white)
                                 .font(.system(size: 10, weight: .thin))
                         )
@@ -51,11 +50,10 @@ struct LendStatusViewModel: View {
                 
                 Spacer()
             }
-            .padding(.horizontal,80)
+            .padding(.horizontal, 80)
         }
     }
 }
-
 
 struct HomeView: View {
     @State private var devices: [DeviceModel] = []
@@ -119,14 +117,14 @@ struct HomeView: View {
                                     Text("회원님이 대출중인 책")
                                         .bold()
                                     ScrollView {
-                                        VStack(alignment: .leading,spacing: 8) {
+                                        VStack(alignment: .leading, spacing: 8) {
                                             Text("미래의 사랑 이야기")
                                                 .font(.system(size: 15, weight: .thin))
                                             Text("화를 극복해내는 방법")
                                                 .font(.system(size: 15, weight: .thin))
                                         }
                                     }
-                                    .frame(height:40)
+                                    .frame(height: 40)
                                 }
                                 .offset(x: -80, y: 10)
                                 
@@ -188,7 +186,7 @@ struct HomeView: View {
                     var fetchedDevices: [DeviceModel] = []
                     for data in dataArray {
                         if let id = data["id"] as? Int,
-                           let status = data["status"] as? Int,
+                           let status = data["status"] as? Bool,
                            let deviceName = data["deviceName"] as? String,
                            let imgUrl = data["imgUrl"] as? String? {
                             let device = DeviceModel(id: id, status: status, deviceName: deviceName, imgUrl: imgUrl)
@@ -209,4 +207,3 @@ struct HomeView: View {
 #Preview {
     HomeView()
 }
-
