@@ -7,16 +7,34 @@
 
 import SwiftUI
 import Alamofire
+import SDWebImageSwiftUI
 
-
-struct UserInfo: Codable {
-    let email: String
-    let name: String
+// JSON 응답 구조체 정의
+struct UserInfoResponse: Codable {
+    let user: User
+    let borrowedDevices: [BorrowedDevice]
 }
 
+struct User: Codable {
+    let id: Int
+    let email: String
+    let password: String
+    let name: String
+    let teacher: Bool
+}
+
+struct BorrowedDevice: Codable {
+    let id: Int
+    let deviceName: String
+    let imgUrl: String
+    let status: Bool
+}
+
+// ViewModel 정의
 class UserInfoViewModel: ObservableObject {
     @Published var responseData: String = "Loading..."
-    @Published var userInfo: UserInfo?
+    @Published var userInfo: User?
+    @Published var borrowedDevices: [BorrowedDevice] = []
     
     func fetchUserInfo(token: String) {
         let headers: HTTPHeaders = [
@@ -26,27 +44,31 @@ class UserInfoViewModel: ObservableObject {
         AF.request(Storage().userinfoapiKey, method: .get, headers: headers).responseData { response in
             switch response.result {
             case .success(let data):
+                print("응답 데이터: \(String(data: data, encoding: .utf8) ?? "nil")")
                 do {
-                    let userInfo = try JSONDecoder().decode(UserInfo.self, from: data)
+                    let userInfoResponse = try JSONDecoder().decode(UserInfoResponse.self, from: data)
                     DispatchQueue.main.async {
-                        self.userInfo = userInfo
+                        self.userInfo = userInfoResponse.user
+                        self.borrowedDevices = userInfoResponse.borrowedDevices
                     }
                 } catch {
                     DispatchQueue.main.async {
                         self.responseData = "Failed to decode JSON: \(error.localizedDescription)"
+                        print("JSON 디코딩 실패: \(error.localizedDescription)")
                     }
                 }
             case .failure(let error):
                 DispatchQueue.main.async {
                     self.responseData = "Error: \(error.localizedDescription)"
+                    print("네트워크 요청 실패: \(error.localizedDescription)")
                 }
             }
         }
     }
 }
 
+// View 정의
 struct MypageView: View {
-    
     @EnvironmentObject var tokenManager: TokenManager
     @StateObject private var viewModel = UserInfoViewModel()
     
@@ -60,10 +82,10 @@ struct MypageView: View {
                         Image(systemName: "person.circle.fill")
                             .resizable()
                             .scaledToFit()
-                            .frame(width:112)
+                            .frame(width: 112)
                         Spacer()
-                            .frame(width:20)
-                        VStack(alignment: .leading, spacing:10) {
+                            .frame(width: 20)
+                        VStack(alignment: .leading, spacing: 10) {
                             if let userInfo = viewModel.userInfo {
                                 Text(userInfo.name)
                                     .font(.system(size: 24, weight: .semibold))
@@ -79,7 +101,7 @@ struct MypageView: View {
                         }
                     }
                 }
-                .offset(x:10)
+                .offset(x: 10)
                 Spacer()
                     .frame(height: 30)
                 ZStack {
@@ -96,22 +118,22 @@ struct MypageView: View {
                                 Image("book1")
                                     .resizable()
                                     .scaledToFit()
-                                    .frame(width:100)
+                                    .frame(width: 100)
                                     .padding(.bottom, 30)
                                 Image("book1")
                                     .resizable()
                                     .scaledToFit()
-                                    .frame(width:100)
+                                    .frame(width: 100)
                                     .padding(.bottom, 30)
                                 Image("book1")
                                     .resizable()
                                     .scaledToFit()
-                                    .frame(width:100)
+                                    .frame(width: 100)
                                     .padding(.bottom, 30)
                                 Image("book1")
                                     .resizable()
                                     .scaledToFit()
-                                    .frame(width:100)
+                                    .frame(width: 100)
                                     .padding(.bottom, 30)
                             }
                         }
@@ -119,33 +141,53 @@ struct MypageView: View {
                         NavigationLink(destination: BooklistView()) {
                             Text("나의 대출 목록 확인")
                                 .font(.system(size: 13, weight: .medium))
-                                .padding(.leading,220)
+                                .padding(.leading, 220)
                         }
                     }
                     .padding()
                 }
                 .padding()
                 
-                
                 ZStack {
                     Rectangle()
                         .cornerRadius(8)
                         .foregroundColor(.buttoncolor)
-                        .frame(height: 170)
+                        .frame(height: 180)
                     VStack {
                         Text("회원님이 대여중인 기자재")
                             .font(.system(size: 15, weight: .semibold))
                             .padding(.trailing, 170)
-                        HStack{
-                            ScrollView{
-
+                        HStack {
+                            ScrollView(.horizontal) {
+                                HStack {
+                                    ForEach(viewModel.borrowedDevices, id: \.id) { device in
+                                        VStack {
+                                            if let url = URL(string: device.imgUrl) {
+                                                WebImage(url: url)
+                                                    .resizable()
+                                                    .scaledToFit()
+                                                    .cornerRadius(50)
+                                                    .frame(width: 100, height: 100)
+                                                    .clipped()
+                                            } else {
+                                                Image("macbook")
+                                                    .resizable()
+                                                    .scaledToFit()
+                                                    .cornerRadius(50)
+                                                    .frame(width: 100, height: 100)
+                                                    .clipped()
+                                            }
+                                        }
+                                        .padding(.horizontal, 8)
+                                    }
+                                }
                             }
-                            .frame(height: 80)
+                            .frame(height: 100)
                         }
                         NavigationLink(destination: LendlistView()) {
                             Text("나의 기자재 대여 목록 확인")
                                 .font(.system(size: 13, weight: .medium))
-                                .padding(.leading,175)
+                                .padding(.leading, 175)
                         }
                     }
                 }
@@ -159,6 +201,8 @@ struct MypageView: View {
         }
     }
 }
+
+
 #Preview {
     MypageView().environmentObject(TokenManager.shared)
 }

@@ -75,7 +75,6 @@ struct LendlistView: View {
         AF.request(Storage().mydevicelendlistapiKey, headers: headers).responseDecodable(of: LendResponse.self) { response in
             switch response.result {
             case .success(let lendResponse):
-                print("응답 데이터: \(lendResponse)") // 성공 시 응답 데이터 출력
                 lendItems = lendResponse.data.map { ($0.deviceName, nil) }
             case .failure(let error):
                 if let data = response.data, let utf8Text = String(data: data, encoding: .utf8) {
