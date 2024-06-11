@@ -112,6 +112,7 @@ struct TeacherHomeView: View {
                 }
             }
         }
+        .navigationBarBackButtonHidden(true)
     }
     
     func sendRequest() {

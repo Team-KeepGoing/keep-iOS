@@ -102,7 +102,7 @@ struct LendResponse: Decodable {
 struct LendDevice: Decodable {
     let imgUrl: String
     let id: Int
-    let status: Bool
+    let status: String
     let deviceName: String
 }
 

@@ -49,6 +49,7 @@ struct StudentInfoView: View {
         }
         .onAppear {
             if let info = studentInfo {
+                print(info)
                 self.StName = info["name"] as? String ?? ""
                 self.StGrade = info["grade"] as? Int ?? 0
                 self.StClass = info["group"] as? Int ?? 0

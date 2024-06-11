@@ -27,7 +27,7 @@ struct BorrowedDevice: Codable {
     let id: Int
     let deviceName: String
     let imgUrl: String
-    let status: Bool
+    let status: String
 }
 
 // ViewModel 정의

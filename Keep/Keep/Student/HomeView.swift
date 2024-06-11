@@ -168,7 +168,7 @@ struct HomeView: View {
                                             .frame(width: 20)
                                     }
                                 }
-                                .padding(.bottom,30)
+                                .padding(.bottom, 30)
                                 
                                 ScrollView {
                                     VStack(spacing: 10) {
