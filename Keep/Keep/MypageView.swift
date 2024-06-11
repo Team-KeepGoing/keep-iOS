@@ -161,24 +161,21 @@ struct MypageView: View {
                             ScrollView(.horizontal) {
                                 HStack {
                                     ForEach(viewModel.borrowedDevices, id: \.id) { device in
-                                        VStack {
-                                            if let url = URL(string: device.imgUrl) {
-                                                WebImage(url: url)
-                                                    .resizable()
-                                                    .scaledToFit()
-                                                    .cornerRadius(50)
-                                                    .frame(width: 100, height: 100)
-                                                    .clipped()
-                                            } else {
-                                                Image("macbook")
-                                                    .resizable()
-                                                    .scaledToFit()
-                                                    .cornerRadius(50)
-                                                    .frame(width: 100, height: 100)
-                                                    .clipped()
-                                            }
+                                        if let url = URL(string: device.imgUrl) {
+                                            WebImage(url: url)
+                                                .resizable()
+                                                .scaledToFit()
+                                                .cornerRadius(50)
+                                                .frame(width: 100, height: 100)
+                                                .clipped()
+                                        } else {
+                                            Image("macbook")
+                                                .resizable()
+                                                .scaledToFit()
+                                                .cornerRadius(50)
+                                                .frame(width: 100, height: 100)
+                                                .clipped()
                                         }
-                                        .padding(.horizontal, 8)
                                     }
                                 }
                             }
