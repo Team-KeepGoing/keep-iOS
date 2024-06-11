@@ -50,11 +50,11 @@ struct StudentInfoView: View {
         .onAppear {
             if let info = studentInfo {
                 print(info)
-                self.StName = info["name"] as? String ?? ""
+                self.StName = info["name"] as? String ?? "김철수"
                 self.StGrade = info["grade"] as? Int ?? 0
                 self.StClass = info["group"] as? Int ?? 0
                 self.StNum = info["groupNum"] as? Int ?? 0
-                self.StPhoneNumber = info["phoneNumber"] as? String ?? ""
+                self.StPhoneNumber = info["phoneNumber"] as? String ?? "010-1234-5678"
             }
         }
     }

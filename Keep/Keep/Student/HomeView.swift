@@ -168,7 +168,6 @@ struct HomeView: View {
                                             .frame(width: 20)
                                     }
                                 }
-                                .padding(.bottom, 30)
                                 
                                 ScrollView {
                                     VStack(spacing: 10) {
@@ -177,10 +176,11 @@ struct HomeView: View {
                                         }
                                     }
                                     .padding()
-                                    .offset(x: -90)
+                                    .offset(x: -90,y:-20)
                                 }
                                 .frame(height: 300)
                             }
+                            .padding(.bottom,28)
                         )
                 }
                 .padding(80)
