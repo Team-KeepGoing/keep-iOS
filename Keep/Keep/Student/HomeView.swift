@@ -10,16 +10,28 @@ import SDWebImageSwiftUI
 
 struct DeviceModel: Identifiable, Codable {
     let id: Int
-    let status: Bool
+    let status: String
     let deviceName: String
     let imgUrl: String?
+    
+    var isAvailable: Bool {
+        return status == "AVAILABLE"
+    }
+    
+    var isRented: Bool {
+        return status == "RENTED"
+    }
+    
+    var isUnavailable: Bool {
+        return status == "UNAVAILABLE"
+    }
 }
 
 struct LendStatusViewModel: View {
     var device: DeviceModel
     
     var body: some View {
-        NavigationLink(destination: LendDetailView(deviceName: device.deviceName, imgUrl: device.imgUrl, status: device.status)) {
+        NavigationLink(destination: LendDetailView(deviceName: device.deviceName, imgUrl: device.imgUrl, status: device.isRented)) {
             HStack {
                 if let imgUrl = device.imgUrl, let url = URL(string: imgUrl) {
                     WebImage(url: url)
@@ -40,9 +52,9 @@ struct LendStatusViewModel: View {
                     Rectangle()
                         .frame(width: 45, height: 15)
                         .cornerRadius(7)
-                        .foregroundColor(device.status ? .red : .blue)
+                        .foregroundColor(device.isRented ? .red : .blue)
                         .overlay(
-                            Text(device.status ? "사용중" : "대여 가능")
+                            Text(device.isRented ? "사용중" : "대여 가능")
                                 .foregroundColor(.white)
                                 .font(.system(size: 10, weight: .thin))
                         )
@@ -54,6 +66,8 @@ struct LendStatusViewModel: View {
         }
     }
 }
+
+
 
 struct HomeView: View {
     @State private var devices: [DeviceModel] = []
@@ -186,7 +200,7 @@ struct HomeView: View {
                     var fetchedDevices: [DeviceModel] = []
                     for data in dataArray {
                         if let id = data["id"] as? Int,
-                           let status = data["status"] as? Bool,
+                           let status = data["status"] as? String,
                            let deviceName = data["deviceName"] as? String,
                            let imgUrl = data["imgUrl"] as? String? {
                             let device = DeviceModel(id: id, status: status, deviceName: deviceName, imgUrl: imgUrl)
