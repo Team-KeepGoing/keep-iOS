@@ -27,4 +27,5 @@ extension Color {
     static let buttoncolor = Color(hex: "F2F3F5")
     static let selbutton = Color(hex: "181F29")
     static let lendbutton = Color(hex: "3182F7")
+    static let unavcolor = Color(hex: "4D5967")
 }

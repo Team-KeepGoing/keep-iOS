@@ -38,7 +38,7 @@ struct LendStatusView: View {
     var device: Device
     
     var body: some View {
-        NavigationLink(destination: LendDetailView(deviceName: device.deviceName, imgUrl: device.imgUrl, status: device.isRented)) {
+        NavigationLink(destination: LendDetailView(deviceName: device.deviceName, imgUrl: device.imgUrl, status: device.status)) {
             HStack {
                 if let imgUrl = device.imgUrl, let url = URL(string: imgUrl) {
                     WebImage(url: url)
@@ -59,9 +59,9 @@ struct LendStatusView: View {
                     Rectangle()
                         .frame(width: 45, height: 15)
                         .cornerRadius(7)
-                        .foregroundColor(device.isRented ? .red : .blue)
+                        .foregroundColor(device.isRented ? .red : (device.isUnavailable ? .unavcolor : .blue))
                         .overlay(
-                            Text(device.isRented ? "사용중" : "대여 가능")
+                            Text(device.isRented ? "사용중" : (device.isUnavailable ? "대여불가" : "대여가능"))
                                 .foregroundColor(.white)
                                 .font(.system(size: 10, weight: .thin))
                         )

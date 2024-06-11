@@ -102,8 +102,7 @@ struct MypageView: View {
                     }
                 }
                 .offset(x: 10)
-                Spacer()
-                    .frame(height: 30)
+                
                 ZStack {
                     Rectangle()
                         .cornerRadius(8)
