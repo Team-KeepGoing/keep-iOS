@@ -116,11 +116,11 @@ struct TeacherHomeView: View {
     }
     
     func sendRequest() {
+        let studentId = String(format: "%d%d%02d", selectedGrade, selectedClass, selectedNum)
+        
         let parameters: [String: Any] = [
-            "name": StSearch,
-            "grade": selectedGrade,
-            "group": selectedClass,
-            "groupNum": selectedNum
+            "studentId": studentId,
+            "name": StSearch
         ]
         
         AF.request(Storage().studentfindapiKey, method: .get, parameters: parameters, encoding: URLEncoding.default)
