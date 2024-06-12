@@ -148,6 +148,72 @@ struct TeacherHomeView: View {
     }
 }
 
+struct SearchDetailView: View {
+    var body: some View {
+        NavigationView {
+            VStack(alignment: .leading) {
+                Text("'김주환' 학생 검색결과")
+                    .font(.system(size: 28, weight: .semibold))
+                
+                Spacer()
+                    .frame(height:30)
+                
+                ScrollView {
+                    VStack(spacing:20) {
+                        Rectangle()
+                            .frame(width:330,height: 60)
+                            .cornerRadius(15)
+                            .foregroundColor(.buttoncolor)
+                            .overlay {
+                                HStack {
+                                    Text("김주환1")
+                                        .font(.system(size: 25, weight: .semibold))
+                                    Text("2208")
+                                        .font(.system(size: 20, weight: .light))
+                                    Spacer()
+                                        .frame(width:120)
+                                    Button {
+                                        
+                                    } label : {
+                                        Image(systemName: "magnifyingglass")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width:30)
+                                            .foregroundColor(.black)
+                                    }
+                                }
+                            }
+                        Rectangle()
+                            .frame(width:330,height: 60)
+                            .cornerRadius(15)
+                            .foregroundColor(.buttoncolor)
+                            .overlay {
+                                HStack {
+                                    Text("김주환2")
+                                        .font(.system(size: 25, weight: .semibold))
+                                    Text("2308")
+                                        .font(.system(size: 20, weight: .light))
+                                    Spacer()
+                                        .frame(width:120)
+                                    Button {
+                                        
+                                    } label : {
+                                        Image(systemName: "magnifyingglass")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width:30)
+                                            .foregroundColor(.black)
+                                    }
+                                }
+                            }
+                    }
+                }
+                .frame(height:600)
+            }
+        }
+    }
+}
+
 #Preview {
     TeacherHomeView()
 }

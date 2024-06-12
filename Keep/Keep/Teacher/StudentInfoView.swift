@@ -59,7 +59,6 @@ struct StudentInfoView: View {
         }
     }
 }
-
 #Preview {
     StudentInfoView(studentInfo: ["name": "김주환", "grade": 2, "group": 2, "groupNum": 8, "phoneNumber": "010-1234-5678"])
 }
