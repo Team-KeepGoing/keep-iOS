@@ -11,7 +11,9 @@ struct StudentInfoView: View {
     var studentInfo: [String: Any]?
     
     @State private var StName: String = ""
-    @State private var StId: String = ""
+    @State private var StGrade: String = ""
+    @State private var StClass: String = ""
+    @State private var StNum: String = ""
     @State private var StPhoneNumber: String = ""
     
     var body: some View {
@@ -37,7 +39,7 @@ struct StudentInfoView: View {
                     Text(StName)
                         .font(.system(size: 30, weight: .bold))
                     
-                    Text(StId)
+                    Text("\(StGrade)학년 \(StClass)반 \(StNum)")
                         .font(.system(size: 20, weight: .thin))
                     
                     Text(StPhoneNumber)
@@ -48,7 +50,19 @@ struct StudentInfoView: View {
         .onAppear {
             if let info = studentInfo {
                 self.StName = info["studentName"] as? String ?? "학생 이름 없음"
-                self.StId = info["studentId"] as? String ?? "0"
+                if let studentId = info["studentId"] as? Int {
+                    let grade = studentId / 1000
+                    let cls = (studentId % 1000) / 10
+                    let num = studentId % 10
+                    
+                    self.StGrade = "\(grade)"
+                    self.StClass = "\(cls)"
+                    self.StNum = "\(num)"
+                } else {
+                    self.StGrade = "학년 정보 없음"
+                    self.StClass = "반 정보 없음"
+                    self.StNum = "번호 정보 없음"
+                }
                 self.StPhoneNumber = info["phoneNum"] as? String ?? "전화번호 없음"
             }
         }

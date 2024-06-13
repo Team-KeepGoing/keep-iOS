@@ -81,7 +81,7 @@ struct TeacherHomeView: View {
                         IdsendRequest()
                     }) {
                         Rectangle()
-                            .foregroundColor(.blue)
+                            .foregroundColor(.selbutton)
                             .frame(width: 110, height: 40)
                             .cornerRadius(20)
                             .overlay(
