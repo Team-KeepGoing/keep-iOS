@@ -39,7 +39,7 @@ struct StudentInfoView: View {
                     Text(StName)
                         .font(.system(size: 30, weight: .bold))
                     
-                    Text("\(StGrade)학년 \(StClass)반 \(StNum)")
+                    Text("\(StGrade)학년 \(StClass)반 \(StNum)번")
                         .font(.system(size: 20, weight: .thin))
                     
                     Text(StPhoneNumber)
@@ -50,14 +50,14 @@ struct StudentInfoView: View {
         .onAppear {
             if let info = studentInfo {
                 self.StName = info["studentName"] as? String ?? "학생 이름 없음"
-                if let studentId = info["studentId"] as? Int {
-                    let grade = studentId / 1000
-                    let cls = (studentId % 1000) / 10
-                    let num = studentId % 10
+                if let studentId = info["studentId"] as? String, studentId.count == 4 {
+                    let grade = String(studentId.prefix(1))
+                    let cls = String(studentId.dropFirst().prefix(1))
+                    let num = String(studentId.suffix(2))
                     
-                    self.StGrade = "\(grade)"
-                    self.StClass = "\(cls)"
-                    self.StNum = "\(num)"
+                    self.StGrade = grade
+                    self.StClass = cls
+                    self.StNum = String(Int(num)!)
                 } else {
                     self.StGrade = "학년 정보 없음"
                     self.StClass = "반 정보 없음"
@@ -70,6 +70,6 @@ struct StudentInfoView: View {
 }
 
 #Preview {
-    StudentInfoView(studentInfo: ["studentName": "김주환", "studentId": 2307, "phoneNum": "010-7777-7777"])
+    StudentInfoView(studentInfo: ["studentName": "김주환", "studentId": "2307", "phoneNum": "010-7777-7777"])
 }
 

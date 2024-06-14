@@ -111,9 +111,9 @@ struct TeacherHomeView: View {
             .responseJSON { response in
                 switch response.result {
                 case .success(let value):
-                    if let responseDict = value as? [String: Any], let data = responseDict["data"] as? [String: Any] {
+                    if let responseDict = value as? [String: Any], let dataArray = responseDict["data"] as? [[String: Any]], let firstStudent = dataArray.first {
                         DispatchQueue.main.async {
-                            self.studentInfo = data
+                            self.studentInfo = firstStudent
                             self.navigateToStudentInfo = true // 화면 전환을 위해 true로 설정
                         }
                     } else {
