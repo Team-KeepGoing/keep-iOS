@@ -44,6 +44,8 @@ struct LendStatusViewModel: View {
                         .frame(width: 64, height: 64)
                         .cornerRadius(8)
                 }
+                Spacer()
+                    .frame(width:20)
                 VStack(alignment: .leading, spacing: 3) {
                     Text(device.deviceName)
                         .font(.system(size: 20, weight: .bold))
@@ -62,7 +64,7 @@ struct LendStatusViewModel: View {
                 
                 Spacer()
             }
-            .padding(.horizontal, 80)
+            .padding(.leading, 100)
         }
     }
 }

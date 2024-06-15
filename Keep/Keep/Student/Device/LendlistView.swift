@@ -40,7 +40,7 @@ struct LendlistView: View {
     var body: some View {
         VStack {
             Text("나의 대여 목록")
-                .font(.system(size: 28, weight: .bold))
+                .font(.system(size: 28, weight: .semibold))
                 .padding(.trailing, 170)
             
             Rectangle()

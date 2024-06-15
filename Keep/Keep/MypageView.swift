@@ -44,7 +44,7 @@ class UserInfoViewModel: ObservableObject {
         AF.request(Storage().userinfoapiKey, method: .get, headers: headers).responseData { response in
             switch response.result {
             case .success(let data):
-                print("응답 데이터: \(String(data: data, encoding: .utf8) ?? "nil")")
+//                print("응답 데이터: \(String(data: data, encoding: .utf8) ?? "nil")")
                 do {
                     let userInfoResponse = try JSONDecoder().decode(UserInfoResponse.self, from: data)
                     DispatchQueue.main.async {
@@ -164,14 +164,14 @@ struct MypageView: View {
                                             WebImage(url: url)
                                                 .resizable()
                                                 .scaledToFit()
-                                                .cornerRadius(50)
+                                                .cornerRadius(100)
                                                 .frame(width: 100, height: 100)
                                                 .clipped()
                                         } else {
                                             Image("macbook")
                                                 .resizable()
                                                 .scaledToFit()
-                                                .cornerRadius(50)
+                                                .cornerRadius(100)
                                                 .frame(width: 100, height: 100)
                                                 .clipped()
                                         }

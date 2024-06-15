@@ -17,33 +17,35 @@ struct StudentInfoView: View {
     @State private var StPhoneNumber: String = ""
     
     var body: some View {
-        VStack {
-            Text("학생정보")
-                .font(.system(size: 25, weight: .bold))
-                .offset(x: -115)
-            Spacer().frame(height: 30)
-            
-            ZStack {
-                Rectangle()
-                    .frame(width: 320, height: 510)
-                    .foregroundColor(.buttoncolor)
-                    .cornerRadius(15)
+        NavigationView {
+            VStack {
+                Text("학생정보")
+                    .font(.system(size: 25, weight: .bold))
+                    .offset(x: -115)
+                Spacer().frame(height: 30)
                 
-                VStack(spacing: 10) {
-                    Image(systemName: "person.circle.fill")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 200)
-                        .padding()
+                ZStack {
+                    Rectangle()
+                        .frame(width: 320, height: 510)
+                        .foregroundColor(.buttoncolor)
+                        .cornerRadius(15)
                     
-                    Text(StName)
-                        .font(.system(size: 30, weight: .bold))
-                    
-                    Text("\(StGrade)학년 \(StClass)반 \(StNum)번")
-                        .font(.system(size: 20, weight: .thin))
-                    
-                    Text(StPhoneNumber)
-                        .font(.system(size: 20, weight: .thin))
+                    VStack(spacing: 10) {
+                        Image(systemName: "person.circle.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 200)
+                            .padding()
+                        
+                        Text(StName)
+                            .font(.system(size: 30, weight: .bold))
+                        
+                        Text("\(StGrade)학년 \(StClass)반 \(StNum)번")
+                            .font(.system(size: 20, weight: .thin))
+                        
+                        Text(StPhoneNumber)
+                            .font(.system(size: 20, weight: .thin))
+                    }
                 }
             }
         }
