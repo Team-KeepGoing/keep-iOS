@@ -14,10 +14,10 @@ struct Book: Codable, Identifiable {
     let id: Int
     let bookName: String
     let writer: String
-    let registrationDate: Date
+    let registrationDate: String
     let state: String
     let imageUrl: String?
-    let rentDate: Date
+    let rentDate: String
     let borrower: Borrower
     
     enum CodingKeys: String, CodingKey {
@@ -77,10 +77,14 @@ class BookViewModel: ObservableObject {
             
             switch response.result {
             case .success(let data):
+                // 받은 데이터 출력 (디버깅용)
+                if let jsonString = String(data: data, encoding: .utf8) {
+                    print("Received JSON: \(jsonString)")
+                }
+                
                 do {
                     let decoder = JSONDecoder()
-                    decoder.dateDecodingStrategy = .iso8601
-                    
+                    // 날짜 포맷을 직접 처리하기 때문에 ISO 8601 디코딩 전략을 사용하지 않음
                     let decodedResponse = try decoder.decode(ResponseData.self, from: data)
                     DispatchQueue.main.async {
                         self.books = decodedResponse.data
@@ -98,6 +102,7 @@ class BookViewModel: ObservableObject {
     }
 }
 
+
 // 책 목록을 보여주는 SwiftUI 뷰
 struct BooklistView: View {
     @StateObject private var viewModel = BookViewModel()
@@ -108,13 +113,12 @@ struct BooklistView: View {
                 .font(.system(size: 28, weight: .bold))
                 .padding(.trailing, 170)
             Rectangle()
-                .frame(height: 1)
+                .frame(height: 0.5)
                 .foregroundColor(.gray)
             ScrollView {
                 VStack(spacing: 20) {
                     ForEach(viewModel.books) { book in
                         BookRowView(book: book)
-                        Divider()
                     }
                 }
                 .padding(.horizontal, 20)
@@ -124,6 +128,15 @@ struct BooklistView: View {
         .onAppear {
             viewModel.fetchBooks()
         }
+        .overlay(
+            Group {
+                if viewModel.isLoading {
+                    ProgressView("Loading...")
+                } else if let error = viewModel.error {
+                    Text("Error: \(error.localizedDescription)")
+                }
+            }
+        )
     }
 }
 
@@ -136,6 +149,7 @@ struct BookRowView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 120)
+                .background(Color.gray.opacity(0.1))
             
             VStack(alignment: .leading, spacing: 20) {
                 VStack(alignment: .leading, spacing: 3) {
@@ -164,21 +178,37 @@ struct BookRowView: View {
         }
         .padding()
         Rectangle()
-            .frame(width: 500, height: 1)
+            .frame(width: 500, height: 0.3)
             .foregroundColor(.gray)
     }
     
-    private func formatDate(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        return formatter.string(from: date)
+    private func formatDate(_ date: String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
+        
+        if let dateObj = dateFormatter.date(from: date) {
+            let newFormatter = DateFormatter()
+            newFormatter.dateFormat = "yyyy-MM-dd"
+            return newFormatter.string(from: dateObj)
+        }
+        
+        // 날짜 변환 실패 시 원래 문자열 반환
+        return date.components(separatedBy: "T").first ?? date
     }
     
-    private func calculateReturnDate(_ rentDate: Date) -> String {
-        let returnDate = Calendar.current.date(byAdding: .day, value: 7, to: rentDate)!
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        return formatter.string(from: returnDate)
+    private func calculateReturnDate(_ rentDate: String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
+        
+        if let dateObj = dateFormatter.date(from: rentDate) {
+            let returnDate = Calendar.current.date(byAdding: .day, value: 7, to: dateObj)!
+            let newFormatter = DateFormatter()
+            newFormatter.dateFormat = "yyyy-MM-dd"
+            return newFormatter.string(from: returnDate)
+        }
+        
+        // 날짜 변환 실패 시 원래 문자열 반환
+        return rentDate.components(separatedBy: "T").first ?? rentDate
     }
 }
 
