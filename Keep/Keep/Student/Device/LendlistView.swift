@@ -10,7 +10,7 @@ import Alamofire
 
 struct LendItemView: View {
     var deviceName: String
-    var lendDate: String? // 현재 예시 JSON에 lendDate가 없으므로 사용되지 않음
+    var lendDate: String?
     
     var body: some View {
         Rectangle()
@@ -21,6 +21,7 @@ struct LendItemView: View {
                 HStack(spacing: 120) {
                     Text(deviceName)
                         .font(.system(size: 22, weight: .semibold))
+                        
                     if let lendDate = lendDate {
                         Text(lendDate)
                     } else {
@@ -75,7 +76,7 @@ struct LendlistView: View {
         AF.request(Storage().mydevicelendlistapiKey, headers: headers).responseDecodable(of: LendResponse.self) { response in
             switch response.result {
             case .success(let lendResponse):
-                lendItems = lendResponse.data.map { ($0.deviceName, nil) }
+                lendItems = lendResponse.data.map { ($0.deviceName, $0.rentDate) }
             case .failure(let error):
                 if let data = response.data, let utf8Text = String(data: data, encoding: .utf8) {
                     print("응답 데이터: \(utf8Text)") // 실패 시 응답 데이터 출력
@@ -91,12 +92,6 @@ struct LendResponse: Decodable {
     let httpStatus: String
     let message: String
     let data: [LendDevice]
-
-    enum CodingKeys: String, CodingKey {
-        case httpStatus
-        case message = "massage" // 'message' 키도 처리하도록 수정
-        case data
-    }
 }
 
 struct LendDevice: Decodable {
@@ -104,8 +99,10 @@ struct LendDevice: Decodable {
     let id: Int
     let status: String
     let deviceName: String
+    let rentDate: String
 }
 
 #Preview {
     LendlistView()
 }
+

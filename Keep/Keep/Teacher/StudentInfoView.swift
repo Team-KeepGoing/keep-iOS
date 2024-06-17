@@ -17,35 +17,33 @@ struct StudentInfoView: View {
     @State private var StPhoneNumber: String = ""
     
     var body: some View {
-        NavigationView {
-            VStack {
-                Text("학생정보")
-                    .font(.system(size: 25, weight: .bold))
-                    .offset(x: -115)
-                Spacer().frame(height: 30)
+        VStack {
+            Text("학생정보")
+                .font(.system(size: 25, weight: .bold))
+                .offset(x: -115)
+            Spacer().frame(height: 30)
+            
+            ZStack {
+                Rectangle()
+                    .frame(width: 320, height: 510)
+                    .foregroundColor(.buttoncolor)
+                    .cornerRadius(15)
                 
-                ZStack {
-                    Rectangle()
-                        .frame(width: 320, height: 510)
-                        .foregroundColor(.buttoncolor)
-                        .cornerRadius(15)
+                VStack(spacing: 10) {
+                    Image(systemName: "person.circle.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 200)
+                        .padding()
                     
-                    VStack(spacing: 10) {
-                        Image(systemName: "person.circle.fill")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 200)
-                            .padding()
-                        
-                        Text(StName)
-                            .font(.system(size: 30, weight: .bold))
-                        
-                        Text("\(StGrade)학년 \(StClass)반 \(StNum)번")
-                            .font(.system(size: 20, weight: .thin))
-                        
-                        Text(StPhoneNumber)
-                            .font(.system(size: 20, weight: .thin))
-                    }
+                    Text(StName)
+                        .font(.system(size: 30, weight: .bold))
+                    
+                    Text("\(StGrade)학년 \(StClass)반 \(StNum)번")
+                        .font(.system(size: 20, weight: .thin))
+                    
+                    Text(StPhoneNumber)
+                        .font(.system(size: 20, weight: .thin))
                 }
             }
         }
@@ -59,7 +57,7 @@ struct StudentInfoView: View {
                     
                     self.StGrade = grade
                     self.StClass = cls
-                    self.StNum = String(Int(num)!)
+                    self.StNum = num
                 } else {
                     self.StGrade = "학년 정보 없음"
                     self.StClass = "반 정보 없음"

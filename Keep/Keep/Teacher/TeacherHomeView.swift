@@ -14,11 +14,12 @@ struct TeacherHomeView: View {
     let ScNum = Array(1...20).map { String($0) }
     
     @State private var StSearch: String = ""
-    @State private var selectedGrade: Int = 1
-    @State private var selectedClass: Int = 1
-    @State private var selectedNum: Int = 7
+    @State private var selectedGrade: String = "1"
+    @State private var selectedClass: String = "1"
+    @State private var selectedNum: String = "1"
     @State private var studentInfo: [String: Any]?
     @State private var navigateToStudentInfo = false
+    @State private var multipleStudents: [[String: Any]] = []
     
     var body: some View {
         NavigationView {
@@ -53,7 +54,7 @@ struct TeacherHomeView: View {
                 VStack {
                     Picker("학년 선택", selection: $selectedGrade) {
                         ForEach(ScGrades, id: \.self) { grade in
-                            Text(grade).tag(Int(grade) ?? 1)
+                            Text(grade).tag(grade)
                         }
                     }
                     .pickerStyle(.inline)
@@ -61,7 +62,7 @@ struct TeacherHomeView: View {
                     
                     Picker("반 선택", selection: $selectedClass) {
                         ForEach(ScClass, id: \.self) { cls in
-                            Text(cls).tag(Int(cls) ?? 1)
+                            Text(cls).tag(cls)
                         }
                     }
                     .pickerStyle(.inline)
@@ -69,7 +70,7 @@ struct TeacherHomeView: View {
                     
                     Picker("번호 선택", selection: $selectedNum) {
                         ForEach(ScNum, id: \.self) { num in
-                            Text(num).tag(Int(num) ?? 1)
+                            Text(num).tag(num)
                         }
                     }
                     .pickerStyle(.inline)
@@ -81,7 +82,7 @@ struct TeacherHomeView: View {
                         IdsendRequest()
                     }) {
                         Rectangle()
-                            .foregroundColor(.selbutton)
+                            .foregroundColor(.selbutton) 
                             .frame(width: 110, height: 40)
                             .cornerRadius(20)
                             .overlay(
@@ -92,7 +93,10 @@ struct TeacherHomeView: View {
                     }
                 }
                 
-                NavigationLink(destination: StudentInfoView(studentInfo: studentInfo), isActive: $navigateToStudentInfo) {
+                NavigationLink(destination: StudentInfoView(studentInfo: studentInfo ?? [:]), isActive: $navigateToStudentInfo) {
+                    EmptyView()
+                }
+                NavigationLink(destination: SearchDetailView(students: multipleStudents, studentName: StSearch), isActive: .constant(!multipleStudents.isEmpty)) {
                     EmptyView()
                 }
             }
@@ -111,21 +115,30 @@ struct TeacherHomeView: View {
             .responseJSON { response in
                 switch response.result {
                 case .success(let value):
-                    if let responseDict = value as? [String: Any], let dataArray = responseDict["data"] as? [[String: Any]], let firstStudent = dataArray.first {
+                    if let responseDict = value as? [String: Any], let dataArray = responseDict["data"] as? [[String: Any]] {
                         DispatchQueue.main.async {
-                            self.studentInfo = firstStudent
-                            self.navigateToStudentInfo = true // 화면 전환을 위해 true로 설정
+                            if dataArray.count == 1 {
+                                self.studentInfo = dataArray.first
+                                self.navigateToStudentInfo = true
+                                self.multipleStudents = []
+                            } else {
+                                self.studentInfo = nil
+                                self.navigateToStudentInfo = false
+                                self.multipleStudents = dataArray
+                            }
                         }
                     } else {
                         DispatchQueue.main.async {
                             self.studentInfo = nil
                             self.navigateToStudentInfo = false
+                            self.multipleStudents = []
                         }
                     }
                 case .failure(let error):
                     DispatchQueue.main.async {
                         self.studentInfo = nil
                         self.navigateToStudentInfo = false
+                        self.multipleStudents = []
                     }
                     print("Error: \(error.localizedDescription)")
                 }
@@ -134,7 +147,13 @@ struct TeacherHomeView: View {
     
     // 학번으로 검색하는 함수
     func IdsendRequest() {
-        let studentId = String(format: "%d%d%02d", selectedGrade, selectedClass, selectedNum)
+        // selectedGrade, selectedClass, selectedNum을 정수로 변환하여 학번 생성
+        guard let grade = Int(selectedGrade), let cls = Int(selectedClass), let num = Int(selectedNum) else {
+            print("Invalid selectedGrade, selectedClass, or selectedNum")
+            return
+        }
+        
+        let studentId = "\(grade)\(cls)\(num)"
         
         let parameters: [String: Any] = [
             "studentId": studentId
@@ -145,21 +164,30 @@ struct TeacherHomeView: View {
             .responseJSON { response in
                 switch response.result {
                 case .success(let value):
-                    if let responseDict = value as? [String: Any], let data = responseDict["data"] as? [String: Any] {
+                    if let responseDict = value as? [String: Any], let dataArray = responseDict["data"] as? [[String: Any]] {
                         DispatchQueue.main.async {
-                            self.studentInfo = data
-                            self.navigateToStudentInfo = true // 화면 전환을 위해 true로 설정
+                            if dataArray.count == 1 {
+                                self.studentInfo = dataArray.first
+                                self.navigateToStudentInfo = true
+                                self.multipleStudents = []
+                            } else {
+                                self.studentInfo = nil
+                                self.navigateToStudentInfo = false
+                                self.multipleStudents = dataArray
+                            }
                         }
                     } else {
                         DispatchQueue.main.async {
                             self.studentInfo = nil
                             self.navigateToStudentInfo = false
+                            self.multipleStudents = []
                         }
                     }
                 case .failure(let error):
                     DispatchQueue.main.async {
                         self.studentInfo = nil
                         self.navigateToStudentInfo = false
+                        self.multipleStudents = []
                     }
                     print("Error: \(error.localizedDescription)")
                 }
@@ -170,4 +198,3 @@ struct TeacherHomeView: View {
 #Preview {
     TeacherHomeView()
 }
-
