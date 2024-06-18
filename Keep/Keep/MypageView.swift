@@ -9,10 +9,19 @@ import SwiftUI
 import Alamofire
 import SDWebImageSwiftUI
 
+struct BorrowedBook: Codable {
+    let id: Int
+    let bookName: String
+    let imageUrl: String?  // 이미지 URL은 옵셔널로 설정합니다.
+    let rentDate: String  // 예시에서는 String으로 설정되어 있지만, Date로 설정하는 것이 좋습니다.
+    let state: String
+}
+
 // JSON 응답 구조체 정의
 struct UserInfoResponse: Codable {
     let user: User
     let borrowedDevices: [BorrowedDevice]
+    let borrowedBooks: [BorrowedBook]
 }
 
 struct User: Codable {
@@ -35,6 +44,7 @@ class UserInfoViewModel: ObservableObject {
     @Published var responseData: String = "Loading..."
     @Published var userInfo: User?
     @Published var borrowedDevices: [BorrowedDevice] = []
+    @Published var borrowedBooks: [BorrowedBook] = []
     
     func fetchUserInfo(token: String) {
         let headers: HTTPHeaders = [
@@ -44,22 +54,22 @@ class UserInfoViewModel: ObservableObject {
         AF.request(Storage().userinfoapiKey, method: .get, headers: headers).responseData { response in
             switch response.result {
             case .success(let data):
-//                print("응답 데이터: \(String(data: data, encoding: .utf8) ?? "nil")")
                 do {
                     let userInfoResponse = try JSONDecoder().decode(UserInfoResponse.self, from: data)
                     DispatchQueue.main.async {
                         self.userInfo = userInfoResponse.user
                         self.borrowedDevices = userInfoResponse.borrowedDevices
+                        self.borrowedBooks = userInfoResponse.borrowedBooks
                     }
                 } catch {
                     DispatchQueue.main.async {
-                        self.responseData = "Failed to decode JSON: \(error.localizedDescription)"
+                        self.responseData = "JSON 디코딩 실패: \(error.localizedDescription)"
                         print("JSON 디코딩 실패: \(error.localizedDescription)")
                     }
                 }
             case .failure(let error):
                 DispatchQueue.main.async {
-                    self.responseData = "Error: \(error.localizedDescription)"
+                    self.responseData = "네트워크 요청 실패: \(error.localizedDescription)"
                     print("네트워크 요청 실패: \(error.localizedDescription)")
                 }
             }
@@ -94,7 +104,7 @@ struct MypageView: View {
                                     .font(.system(size: 18, weight: .light))
                                     .frame(maxWidth: 200, alignment: .leading)
                             } else {
-                                Text("Loading...")
+                                Text("로딩 중...")
                                     .font(.system(size: 24, weight: .semibold))
                                     .font(.system(size: 18, weight: .light))
                             }
@@ -114,26 +124,19 @@ struct MypageView: View {
                             .padding(.trailing, 190)
                         ScrollView(.horizontal) {
                             HStack {
-                                Image("book1")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 100)
-                                    .padding(.bottom, 30)
-                                Image("book1")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 100)
-                                    .padding(.bottom, 30)
-                                Image("book1")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 100)
-                                    .padding(.bottom, 30)
-                                Image("book1")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 100)
-                                    .padding(.bottom, 30)
+                                ForEach(viewModel.borrowedBooks, id: \.id) { book in
+                                    if let imageUrl = book.imageUrl, let url = URL(string: imageUrl) {
+                                        WebImage(url: url)
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width:90)
+                                    } else {
+                                        Image("placeholder_image")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width:90)
+                                    }
+                                }
                             }
                         }
                         .frame(height: 170)
@@ -164,16 +167,16 @@ struct MypageView: View {
                                             WebImage(url: url)
                                                 .resizable()
                                                 .scaledToFit()
-                                                .cornerRadius(100)
-                                                .frame(width: 100, height: 100)
-                                                .clipped()
+                                                .frame(width: 80, height: 80)
+                                                .clipShape(Circle())
+                                                .padding()
                                         } else {
                                             Image("macbook")
                                                 .resizable()
                                                 .scaledToFit()
-                                                .cornerRadius(100)
-                                                .frame(width: 100, height: 100)
-                                                .clipped()
+                                                .frame(width: 80, height: 80)
+                                                .clipShape(Circle())
+                                                .padding()
                                         }
                                     }
                                 }
@@ -197,7 +200,6 @@ struct MypageView: View {
         }
     }
 }
-
 
 #Preview {
     MypageView().environmentObject(TokenManager.shared)
