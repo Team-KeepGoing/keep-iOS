@@ -81,13 +81,14 @@ struct HomeView: View {
                     .frame(height: 800)
                     .offset(y: -60)
                 
-                Image("Character")
+                Image("Logo")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 44)
-                    .offset(x: -150, y: -350)
+                    .frame(width: 116,height:57)
+                    .offset(x: -110, y: -300)
                 
-                ScrollView {
+                
+                VStack(spacing: 0) {
                     Rectangle()
                         .frame(width: 350, height: 200)
                         .foregroundColor(.white)
@@ -146,7 +147,7 @@ struct HomeView: View {
                         )
                     
                     Rectangle()
-                        .frame(width: 350, height: 420)
+                        .frame(width: 350, height: 370)
                         .foregroundColor(.white)
                         .cornerRadius(15)
                         .overlay(
@@ -170,6 +171,7 @@ struct HomeView: View {
                                             .frame(width: 20)
                                     }
                                 }
+                                .offset(y:15)
                                 
                                 ScrollView {
                                     VStack(spacing: 10) {
@@ -178,14 +180,14 @@ struct HomeView: View {
                                         }
                                     }
                                     .padding()
-                                    .offset(x: -90,y:-20)
+                                    .offset(x: -90,y:10)
                                 }
                                 .frame(height: 300)
                             }
-                            .padding(.bottom,28)
                         )
                 }
                 .padding(80)
+                .offset(y:20)
             }
             .onAppear {
                 fetchData()
