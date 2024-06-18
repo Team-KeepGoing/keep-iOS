@@ -82,7 +82,7 @@ struct TeacherHomeView: View {
                         IdsendRequest()
                     }) {
                         Rectangle()
-                            .foregroundColor(.selbutton) 
+                            .foregroundColor(.selbutton)
                             .frame(width: 110, height: 40)
                             .cornerRadius(20)
                             .overlay(
@@ -147,13 +147,12 @@ struct TeacherHomeView: View {
     
     // 학번으로 검색하는 함수
     func IdsendRequest() {
-        // selectedGrade, selectedClass, selectedNum을 정수로 변환하여 학번 생성
         guard let grade = Int(selectedGrade), let cls = Int(selectedClass), let num = Int(selectedNum) else {
             print("Invalid selectedGrade, selectedClass, or selectedNum")
             return
         }
         
-        let studentId = "\(grade)\(cls)\(num)"
+        let studentId = "\(grade)\(cls)\(String(format: "%02d", num))"
         
         let parameters: [String: Any] = [
             "studentId": studentId
@@ -164,17 +163,11 @@ struct TeacherHomeView: View {
             .responseJSON { response in
                 switch response.result {
                 case .success(let value):
-                    if let responseDict = value as? [String: Any], let dataArray = responseDict["data"] as? [[String: Any]] {
+                    if let responseDict = value as? [String: Any], let responseData = responseDict["data"] as? [String: Any] {
                         DispatchQueue.main.async {
-                            if dataArray.count == 1 {
-                                self.studentInfo = dataArray.first
-                                self.navigateToStudentInfo = true
-                                self.multipleStudents = []
-                            } else {
-                                self.studentInfo = nil
-                                self.navigateToStudentInfo = false
-                                self.multipleStudents = dataArray
-                            }
+                            self.studentInfo = responseData
+                            self.navigateToStudentInfo = true
+                            self.multipleStudents = []
                         }
                     } else {
                         DispatchQueue.main.async {
@@ -198,3 +191,4 @@ struct TeacherHomeView: View {
 #Preview {
     TeacherHomeView()
 }
+

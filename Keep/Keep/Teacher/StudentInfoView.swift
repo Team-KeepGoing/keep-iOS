@@ -53,11 +53,14 @@ struct StudentInfoView: View {
                 if let studentId = info["studentId"] as? String, studentId.count == 4 {
                     let grade = String(studentId.prefix(1))
                     let cls = String(studentId.dropFirst().prefix(1))
-                    let num = String(studentId.suffix(2))
+                    if let numInt = Int(studentId.suffix(2)) {
+                        self.StNum = String(numInt)
+                    } else {
+                        self.StNum = "번호 정보 없음"
+                    }
                     
                     self.StGrade = grade
                     self.StClass = cls
-                    self.StNum = num
                 } else {
                     self.StGrade = "학년 정보 없음"
                     self.StClass = "반 정보 없음"
