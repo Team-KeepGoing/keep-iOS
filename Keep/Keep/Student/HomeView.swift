@@ -8,6 +8,14 @@ import SwiftUI
 import Alamofire
 import SDWebImageSwiftUI
 
+struct BorrowedBookModel: Identifiable {
+    let id: Int
+    let bookName: String
+    let imageUrl: String?
+    let rentDate: String
+    let state: String
+}
+
 struct DeviceModel: Identifiable, Codable {
     let id: Int
     let status: String
@@ -70,6 +78,7 @@ struct LendStatusViewModel: View {
 }
 
 struct HomeView: View {
+    @State private var borrowedBooks: [BorrowedBookModel] = []
     @State private var devices: [DeviceModel] = []
     @State private var errorMessage: String?
     
@@ -133,10 +142,10 @@ struct HomeView: View {
                                         .bold()
                                     ScrollView {
                                         VStack(alignment: .leading, spacing: 8) {
-                                            Text("미래의 사랑 이야기")
-                                                .font(.system(size: 15, weight: .thin))
-                                            Text("화를 극복해내는 방법")
-                                                .font(.system(size: 15, weight: .thin))
+                                            ForEach(borrowedBooks) { book in
+                                                Text(book.bookName)
+                                                    .font(.system(size: 15, weight: .thin))
+                                            }
                                         }
                                     }
                                     .frame(height: 40)
@@ -196,9 +205,15 @@ struct HomeView: View {
     }
     
     func fetchData() {
+        guard let token = TokenManager.shared.token else {
+            self.errorMessage = "토큰이 없습니다."
+            return
+        }
+        
         AF.request(Storage().devicelistapiKey, method: .get).responseJSON { response in
             switch response.result {
             case .success(let value):
+                print("Device List API Response: \(value)")
                 if let json = value as? [String: Any], let dataArray = json["data"] as? [[String: Any]] {
                     var fetchedDevices: [DeviceModel] = []
                     for data in dataArray {
@@ -213,14 +228,34 @@ struct HomeView: View {
                     devices = fetchedDevices
                 }
             case .failure(let error):
-                print("네트워크 요청 실패: \(error.localizedDescription)")
-                self.errorMessage = "네트워크 요청 실패: \(error.localizedDescription)"
+                print("Device List API Error: \(error.localizedDescription)")
+                self.errorMessage = "Device List API Error: \(error.localizedDescription)"
+            }
+        }
+        
+        AF.request(Storage().userinfoapiKey, method: .get, headers: ["Authorization": "Bearer \(token)"]).responseData { response in
+            switch response.result {
+            case .success(let data):
+                print("User Info API Response: \(String(data: data, encoding: .utf8) ?? "")")
+                do {
+                    let userInfoResponse = try JSONDecoder().decode(UserInfoResponse.self, from: data)
+                    DispatchQueue.main.async {
+                        self.borrowedBooks = userInfoResponse.borrowedBooks.map {
+                            BorrowedBookModel(id: $0.id, bookName: $0.bookName, imageUrl: $0.imageUrl, rentDate: $0.rentDate, state: $0.state)
+                        }
+                    }
+                } catch {
+                    print("JSON decoding error: \(error.localizedDescription)")
+                    self.errorMessage = "JSON decoding error: \(error.localizedDescription)"
+                }
+            case .failure(let error):
+                print("User Info API Error: \(error.localizedDescription)")
+                self.errorMessage = "User Info API Error: \(error.localizedDescription)"
             }
         }
     }
 }
 
-// 미리보기
 #Preview {
     HomeView()
 }

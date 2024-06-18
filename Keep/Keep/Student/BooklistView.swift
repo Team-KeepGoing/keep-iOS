@@ -150,6 +150,7 @@ struct BookRowView: View {
                 .scaledToFit()
                 .frame(width: 120)
                 .background(Color.gray.opacity(0.1))
+                .offset(x:-30)
             
             VStack(alignment: .leading, spacing: 20) {
                 VStack(alignment: .leading, spacing: 3) {
