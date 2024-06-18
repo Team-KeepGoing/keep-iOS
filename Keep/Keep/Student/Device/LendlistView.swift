@@ -18,24 +18,43 @@ struct LendItemView: View {
             .foregroundColor(.buttoncolor)
             .cornerRadius(15)
             .overlay(
-                HStack(spacing: 120) {
-                    Text(deviceName)
-                        .font(.system(size: 22, weight: .semibold))
+                VStack(alignment: .leading) {
+                    HStack {
+                        Text(deviceName)
+                            .font(.system(size: 22, weight: .semibold))
+                            .padding(.leading, 10)
                         
-                    if let lendDate = lendDate {
-                        Text(lendDate)
-                    } else {
-                        Text("날짜 없음")
+                        Spacer()
+                        
+                        if let lendDate = lendDate {
+                            Text(formatDate(lendDate))
+                                .padding(.horizontal, 10)
+                        } else {
+                            Text("날짜 없음")
+                                .padding(.horizontal, 10)
+                        }
                     }
+                    .padding(.horizontal, 10)
                 }
             )
     }
+    
+    func formatDate(_ dateString: String) -> String {
+        // 예시: "2024-06-14T15:11:02.418662" 형식에서 앞에서 10글자를 추출하여 "yyyy-MM-dd" 형식으로 변환
+        let dateSubstring = String(dateString.prefix(10))
+        
+        return dateSubstring
+    }
 }
+
+
+
+
 
 struct LendlistView: View {
     @State private var lendItems: [(String, String?)] = []
     @State private var errorMessage: String?
-
+    
     @ObservedObject private var tokenManager = TokenManager.shared
     
     var body: some View {
@@ -68,7 +87,7 @@ struct LendlistView: View {
             errorMessage = "토큰이 없습니다."
             return
         }
-
+        
         let headers: HTTPHeaders = [
             "Authorization": "Bearer \(token)"
         ]
