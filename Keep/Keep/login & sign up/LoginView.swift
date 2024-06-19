@@ -23,7 +23,6 @@ struct LoginView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width:316,height:208)
-                        .offset()
                     VStack {
                         Button(action: {
                             presentationMode.wrappedValue.dismiss()
