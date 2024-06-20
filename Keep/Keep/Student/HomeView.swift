@@ -84,122 +84,124 @@ struct HomeView: View {
     
     var body: some View {
         NavigationView {
-            ZStack {
-                Rectangle()
-                    .foregroundColor(.buttoncolor)
-                    .frame(height: 800)
-                    .offset(y: -60)
-                
-                Image("Logo")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 116,height:57)
-                    .offset(x: -110, y: -300)
-                
-                
-                VStack(spacing: 0) {
+            VStack {
+                ZStack {
                     Rectangle()
-                        .frame(width: 350, height: 200)
-                        .foregroundColor(.white)
-                        .cornerRadius(15)
-                        .padding()
-                        .overlay(
-                            VStack {
-                                HStack {
-                                    Image(systemName: "qrcode")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 23)
-                                        .padding(5)
-                                    Text("도서 대출")
-                                        .font(.system(size: 23, weight: .bold))
-                                    Spacer()
-                                        .frame(width: 150)
-                                    NavigationLink(destination: QrView()) {
-                                        Image(systemName: "arrow.right")
+                        .foregroundColor(.buttoncolor)
+                        .frame(height: 800)
+                        .offset(y: -60)
+                    
+                    Image("Logo")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 116,height:57)
+                        .offset(x: -110, y: -300)
+                    
+                    
+                    VStack(spacing: 0) {
+                        Rectangle()
+                            .frame(width: 350, height: 200)
+                            .foregroundColor(.white)
+                            .cornerRadius(15)
+                            .padding()
+                            .overlay(
+                                VStack {
+                                    HStack {
+                                        Image(systemName: "qrcode")
                                             .resizable()
                                             .scaledToFit()
-                                            .foregroundColor(.black)
-                                            .frame(width: 20)
-                                    }
-                                }
-                                
-                                NavigationLink(destination: BooklistView()) {
-                                    Rectangle()
-                                        .foregroundColor(.buttoncolor)
-                                        .frame(width: 125, height: 35)
-                                        .cornerRadius(10)
-                                        .overlay(
-                                            Text("나의 대출 목록")
+                                            .frame(width: 23)
+                                            .padding(5)
+                                        Text("도서 대출")
+                                            .font(.system(size: 23, weight: .bold))
+                                        Spacer()
+                                            .frame(width: 150)
+                                        NavigationLink(destination: QrView()) {
+                                            Image(systemName: "arrow.right")
+                                                .resizable()
+                                                .scaledToFit()
                                                 .foregroundColor(.black)
-                                                .font(.system(size: 17, weight: .semibold))
-                                        )
-                                }
-                                .padding(.leading, 180)
-                                
-                                VStack(alignment: .leading) {
-                                    Text("회원님이 대출중인 책")
-                                        .bold()
-                                    ScrollView {
-                                        VStack(alignment: .leading, spacing: 8) {
-                                            ForEach(borrowedBooks) { book in
-                                                Text(book.bookName)
-                                                    .font(.system(size: 15, weight: .thin))
+                                                .frame(width: 20)
+                                        }
+                                    }
+                                    
+                                    NavigationLink(destination: BooklistView()) {
+                                        Rectangle()
+                                            .foregroundColor(.buttoncolor)
+                                            .frame(width: 125, height: 35)
+                                            .cornerRadius(10)
+                                            .overlay(
+                                                Text("나의 대출 목록")
+                                                    .foregroundColor(.black)
+                                                    .font(.system(size: 17, weight: .semibold))
+                                            )
+                                    }
+                                    .padding(.leading, 180)
+                                    
+                                    VStack(alignment: .leading) {
+                                        Text("회원님이 대출중인 책")
+                                            .bold()
+                                        ScrollView {
+                                            VStack(alignment: .leading, spacing: 8) {
+                                                ForEach(borrowedBooks) { book in
+                                                    Text(book.bookName)
+                                                        .font(.system(size: 15, weight: .thin))
+                                                }
                                             }
                                         }
+                                        .frame(height: 40)
                                     }
-                                    .frame(height: 40)
-                                }
-                                .offset(x: -80, y: 10)
-                                
-                            }
-                        )
-                    
-                    Rectangle()
-                        .frame(width: 350, height: 370)
-                        .foregroundColor(.white)
-                        .cornerRadius(15)
-                        .overlay(
-                            VStack {
-                                HStack {
-                                    Image(systemName: "printer")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 23)
-                                        .padding(5)
-                                    Text("기기 대여")
-                                        .font(.system(size: 23, weight: .bold))
-                                    Spacer()
-                                        .frame(width: 150)
+                                    .offset(x: -80, y: 10)
                                     
-                                    NavigationLink(destination: LendView()) {
-                                        Image(systemName: "arrow.right")
+                                }
+                            )
+                        
+                        Rectangle()
+                            .frame(width: 350, height: 370)
+                            .foregroundColor(.white)
+                            .cornerRadius(15)
+                            .overlay(
+                                VStack {
+                                    HStack {
+                                        Image(systemName: "printer")
                                             .resizable()
                                             .scaledToFit()
-                                            .foregroundColor(.black)
-                                            .frame(width: 20)
-                                    }
-                                }
-                                .offset(y:15)
-                                
-                                ScrollView {
-                                    VStack(spacing: 10) {
-                                        ForEach(devices) { device in
-                                            LendStatusViewModel(device: device)
+                                            .frame(width: 23)
+                                            .padding(5)
+                                        Text("기기 대여")
+                                            .font(.system(size: 23, weight: .bold))
+                                        Spacer()
+                                            .frame(width: 150)
+                                        
+                                        NavigationLink(destination: LendView()) {
+                                            Image(systemName: "arrow.right")
+                                                .resizable()
+                                                .scaledToFit()
+                                                .foregroundColor(.black)
+                                                .frame(width: 20)
                                         }
                                     }
-                                    .padding()
-                                    .offset(x: -90,y:10)
+                                    .offset(y:15)
+                                    
+                                    ScrollView {
+                                        VStack(spacing: 10) {
+                                            ForEach(devices) { device in
+                                                LendStatusViewModel(device: device)
+                                            }
+                                        }
+                                        .padding()
+                                        .offset(x: -90,y:10)
+                                    }
+                                    .frame(height: 300)
                                 }
-                                .frame(height: 300)
-                            }
-                        )
+                            )
+                    }
+                    .padding(80)
+                    .offset(y:20)
                 }
-                .padding(80)
-                .offset(y:20)
-            }
-            .onAppear {
-                fetchData()
+                .onAppear {
+                    fetchData()
+                }
             }
         }
     }

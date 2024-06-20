@@ -13,30 +13,32 @@ struct LendItemView: View {
     var lendDate: String?
     
     var body: some View {
-        Rectangle()
-            .frame(width: 340, height: 60)
-            .foregroundColor(.buttoncolor)
-            .cornerRadius(15)
-            .overlay(
-                VStack(alignment: .leading) {
-                    HStack {
-                        Text(deviceName)
-                            .font(.system(size: 22, weight: .semibold))
-                            .padding(.leading, 10)
-                        
-                        Spacer()
-                        
-                        if let lendDate = lendDate {
-                            Text(formatDate(lendDate))
-                                .padding(.horizontal, 10)
-                        } else {
-                            Text("날짜 없음")
-                                .padding(.horizontal, 10)
+        VStack {
+            Rectangle()
+                .frame(width: 340, height: 60)
+                .foregroundColor(.buttoncolor)
+                .cornerRadius(15)
+                .overlay(
+                    VStack(alignment: .leading) {
+                        HStack {
+                            Text(deviceName)
+                                .font(.system(size: 22, weight: .semibold))
+                                .padding(.leading, 10)
+                            
+                            Spacer()
+                            
+                            if let lendDate = lendDate {
+                                Text(formatDate(lendDate))
+                                    .padding(.horizontal, 10)
+                            } else {
+                                Text("날짜 없음")
+                                    .padding(.horizontal, 10)
+                            }
                         }
+                        .padding(.horizontal, 10)
                     }
-                    .padding(.horizontal, 10)
-                }
-            )
+                )
+        }
     }
     
     func formatDate(_ dateString: String) -> String {
