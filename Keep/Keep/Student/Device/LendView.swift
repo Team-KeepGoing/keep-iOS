@@ -38,40 +38,42 @@ struct LendStatusView: View {
     var device: Device
     
     var body: some View {
-        NavigationLink(destination: LendDetailView(deviceName: device.deviceName, imgUrl: device.imgUrl, status: device.status)) {
-            HStack {
-                if let imgUrl = device.imgUrl, let url = URL(string: imgUrl) {
-                    WebImage(url: url)
-                        .resizable()
-                        .frame(width: 64, height: 64)
-                        .cornerRadius(8)
-                } else {
-                    Image("placeholder")
-                        .resizable()
-                        .frame(width: 64, height: 64)
-                        .cornerRadius(8)
-                }
-                Spacer()
-                    .frame(width:20)
-                VStack(alignment: .leading, spacing: 3) {
-                    Text(device.deviceName)
-                        .font(.system(size: 20, weight: .bold))
-                        .foregroundColor(.black)
+        VStack {
+            NavigationLink(destination: LendDetailView(deviceName: device.deviceName, imgUrl: device.imgUrl, status: device.status)) {
+                HStack {
+                    if let imgUrl = device.imgUrl, let url = URL(string: imgUrl) {
+                        WebImage(url: url)
+                            .resizable()
+                            .frame(width: 64, height: 64)
+                            .cornerRadius(8)
+                    } else {
+                        Image("placeholder")
+                            .resizable()
+                            .frame(width: 64, height: 64)
+                            .cornerRadius(8)
+                    }
+                    Spacer()
+                        .frame(width:20)
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text(device.deviceName)
+                            .font(.system(size: 20, weight: .bold))
+                            .foregroundColor(.black)
+                        
+                        Rectangle()
+                            .frame(width: 45, height: 15)
+                            .cornerRadius(7)
+                            .foregroundColor(device.isRented ? .red : (device.isUnavailable ? .unavcolor : .blue))
+                            .overlay(
+                                Text(device.isRented ? "사용중" : (device.isUnavailable ? "대여불가" : "대여가능"))
+                                    .foregroundColor(.white)
+                                    .font(.system(size: 10, weight: .thin))
+                            )
+                    }
                     
-                    Rectangle()
-                        .frame(width: 45, height: 15)
-                        .cornerRadius(7)
-                        .foregroundColor(device.isRented ? .red : (device.isUnavailable ? .unavcolor : .blue))
-                        .overlay(
-                            Text(device.isRented ? "사용중" : (device.isUnavailable ? "대여불가" : "대여가능"))
-                                .foregroundColor(.white)
-                                .font(.system(size: 10, weight: .thin))
-                        )
+                    Spacer()
                 }
-                
-                Spacer()
+                .padding(.leading, 40)
             }
-            .padding(.leading, 40)
         }
     }
 }
