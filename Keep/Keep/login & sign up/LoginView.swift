@@ -56,6 +56,7 @@ struct LoginView: View {
                     Text("이메일")
                         .font(.system(size: 17, weight: .bold))
                     TextField("", text: $email)
+                        .textInputAutocapitalization(.never)
                         .padding()
                         .background(
                             RoundedRectangle(cornerRadius: 10)

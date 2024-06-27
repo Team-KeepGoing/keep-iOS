@@ -31,6 +31,7 @@ struct TabbarView: View {
                     Text("기기")
                 }
             MypageView()
+                .environmentObject(TokenManager.shared)
                 .tabItem {
                     Image(systemName: "person")
                     Text("MY")
