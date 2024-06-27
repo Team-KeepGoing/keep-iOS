@@ -52,29 +52,44 @@ struct TeacherHomeView: View {
                 .padding(.leading, 10)
                 
                 VStack {
-                    Picker("학년 선택", selection: $selectedGrade) {
-                        ForEach(ScGrades, id: \.self) { grade in
-                            Text(grade).tag(grade)
+                    ZStack {
+                        Picker("학년 선택", selection: $selectedGrade) {
+                            ForEach(ScGrades, id: \.self) { grade in
+                                Text(grade).tag(grade)
+                            }
                         }
+                        .pickerStyle(.inline)
+                        .frame(width: 350, height: 120)
+                        Text("학년")
+                            .font(.system(size: 18, weight: .semibold))
+                            .padding(.leading,70)
                     }
-                    .pickerStyle(.inline)
-                    .frame(width: 350, height: 120)
                     
-                    Picker("반 선택", selection: $selectedClass) {
-                        ForEach(ScClass, id: \.self) { cls in
-                            Text(cls).tag(cls)
+                    ZStack {
+                        Picker("반 선택", selection: $selectedClass) {
+                            ForEach(ScClass, id: \.self) { cls in
+                                Text(cls).tag(cls)
+                            }
                         }
+                        .pickerStyle(.inline)
+                        .frame(width: 350, height: 120)
+                        Text("반")
+                            .font(.system(size: 18, weight: .semibold))
+                            .padding(.leading,60)
                     }
-                    .pickerStyle(.inline)
-                    .frame(width: 350, height: 120)
                     
-                    Picker("번호 선택", selection: $selectedNum) {
-                        ForEach(ScNum, id: \.self) { num in
-                            Text(num).tag(num)
+                    ZStack {
+                        Picker("번호 선택", selection: $selectedNum) {
+                            ForEach(ScNum, id: \.self) { num in
+                                Text(num).tag(num)
+                            }
                         }
+                        .pickerStyle(.inline)
+                        .frame(width: 350, height: 120)
+                        Text("번")
+                            .font(.system(size: 18, weight: .semibold))
+                            .padding(.leading,60)
                     }
-                    .pickerStyle(.inline)
-                    .frame(width: 350, height: 120)
                     
                     Spacer().frame(height: 40)
                     
