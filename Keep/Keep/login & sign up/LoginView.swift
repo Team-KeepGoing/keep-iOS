@@ -13,6 +13,8 @@ struct LoginView: View {
     @State private var password: String = ""
     @State private var isLoggedIn: Bool = false
     @State private var isTeacher: Bool = false
+    @State private var showingAlert: Bool = false
+    @State private var alertMessage: String = ""
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
@@ -83,6 +85,8 @@ struct LoginView: View {
                             case .success(let value):
                                 if let statusCode = response.response?.statusCode, statusCode == 401 {
                                     isLoggedIn = false
+                                    alertMessage = "아이디 또는 비밀번호를 다시 확인해 주세요."
+                                    showingAlert = true
                                     print("JSON: \(value)")
                                 } else if let json = value as? [String: Any], let token = json["token"] as? String, let teacher = json["teacher"] as? Int {
                                     TokenManager.shared.token = token
@@ -90,8 +94,13 @@ struct LoginView: View {
                                     isTeacher = teacher == 1
                                     print("JSON: \(value)")
                                     UserDefaults.standard.set(email, forKey: "email")
+                                } else {
+                                    alertMessage = "로그인에 실패했습니다. 다시 시도해 주세요."
+                                    showingAlert = true
                                 }
                             case .failure(let error):
+                                alertMessage = "로그인에 실패했습니다. 다시 시도해 주세요."
+                                showingAlert = true
                                 print(error)
                             }
                         }
@@ -106,6 +115,9 @@ struct LoginView: View {
                                 .foregroundColor(.white)
                                 .bold()
                         }
+                }
+                .alert(isPresented: $showingAlert) {
+                    Alert(title: Text(alertMessage), message: nil, dismissButton: .default(Text("확인")))
                 }
                 .background(
                     NavigationLink(destination: {
