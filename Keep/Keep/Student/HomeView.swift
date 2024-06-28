@@ -45,12 +45,12 @@ struct LendStatusViewModel: View {
                     WebImage(url: url)
                         .resizable()
                         .frame(width: 64, height: 64)
-                        .cornerRadius(8)
+                        .cornerRadius(50)
                 } else {
                     Image("placeholder")
                         .resizable()
                         .frame(width: 64, height: 64)
-                        .cornerRadius(8)
+                        .cornerRadius(50)
                 }
                 Spacer()
                     .frame(width:20)
