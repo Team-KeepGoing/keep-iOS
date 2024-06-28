@@ -34,6 +34,7 @@ struct SignupView: View {
     @State private var teacher: Bool = false
     @State private var signupSuccess: Bool = false
     @State private var showingAlert: Bool = false
+    @State private var alertMessage: String = ""
     @State private var isTeacher: Bool = false
     @Environment(\.presentationMode) var presentationMode
     
@@ -139,10 +140,16 @@ struct SignupView: View {
                     .frame(height: 30)
                 
                 Button {
-                    if password == repassword {
-                        sendDataToServer()
+                    if validateEmail(email) {
+                        if password == repassword {
+                            sendDataToServer()
+                        } else {
+                            alertMessage = "비밀번호와 비밀번호 확인이 일치하지 않습니다."
+                            showingAlert.toggle()
+                        }
                     } else {
-                        self.showingAlert.toggle()
+                        alertMessage = "올바른 이메일 형식을 입력해 주세요. (@dgsw.hs.kr)"
+                        showingAlert.toggle()
                     }
                 } label: {
                     Rectangle()
@@ -157,7 +164,7 @@ struct SignupView: View {
                         }
                 }
                 .alert(isPresented: $showingAlert) {
-                    Alert(title: Text("비밀번호와 비밀번호 확인이 일치하지 않습니다."), message: nil, dismissButton: .default(Text("확인")))
+                    Alert(title: Text(alertMessage), message: nil, dismissButton: .default(Text("확인")))
                 }
                 
                 NavigationLink(destination: destinationView(), isActive: $signupSuccess) {
@@ -167,6 +174,10 @@ struct SignupView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
+    }
+    
+    func validateEmail(_ email: String) -> Bool {
+        return email.hasSuffix("@dgsw.hs.kr")
     }
     
     func sendDataToServer() {
