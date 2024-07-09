@@ -85,9 +85,9 @@ struct LendView: View {
     var body: some View {
         NavigationView {
             VStack {
-                Text("기기 대여")
+                Text("기기 대여 현황")
                     .font(.system(size: 28, weight: .bold))
-                    .padding(.trailing, 200)
+                    .padding(.trailing, 150)
                 ScrollView {
                     VStack(alignment: .leading, spacing: 10) {
                         ForEach(devices) { device in
