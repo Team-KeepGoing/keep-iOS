@@ -130,8 +130,10 @@ struct TeacherHomeView: View {
             .responseJSON { response in
                 switch response.result {
                 case .success(let value):
+                    print("Response Value: \(value)")  // Print the response value
                     if let responseDict = value as? [String: Any], let dataArray = responseDict["data"] as? [[String: Any]] {
                         DispatchQueue.main.async {
+                            print("Data Array: \(dataArray)")  // Print the data array
                             if dataArray.count == 1 {
                                 self.studentInfo = dataArray.first
                                 self.navigateToStudentInfo = true
@@ -141,6 +143,8 @@ struct TeacherHomeView: View {
                                 self.navigateToStudentInfo = false
                                 self.multipleStudents = dataArray
                             }
+                            print("Student Info: \(String(describing: self.studentInfo))")  // Print studentInfo
+                            print("Multiple Students: \(self.multipleStudents)")  // Print multipleStudents
                         }
                     } else {
                         DispatchQueue.main.async {
@@ -178,11 +182,14 @@ struct TeacherHomeView: View {
             .responseJSON { response in
                 switch response.result {
                 case .success(let value):
+                    print("Response Value: \(value)")  // Print the response value
                     if let responseDict = value as? [String: Any], let responseData = responseDict["data"] as? [String: Any] {
                         DispatchQueue.main.async {
+                            print("Response Data: \(responseData)")  // Print the response data
                             self.studentInfo = responseData
                             self.navigateToStudentInfo = true
                             self.multipleStudents = []
+                            print("Student Info: \(String(describing: self.studentInfo))")  // Print studentInfo
                         }
                     } else {
                         DispatchQueue.main.async {
@@ -206,4 +213,3 @@ struct TeacherHomeView: View {
 #Preview {
     TeacherHomeView()
 }
-

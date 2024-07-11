@@ -9,6 +9,7 @@ import SwiftUI
 
 @main
 struct KeepApp: App {
+    
     let tokenManager = TokenManager.shared
     
     var body: some Scene {

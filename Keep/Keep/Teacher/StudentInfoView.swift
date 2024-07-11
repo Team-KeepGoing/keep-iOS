@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct StudentInfoView: View {
     var studentInfo: [String: Any]?
@@ -15,6 +16,7 @@ struct StudentInfoView: View {
     @State private var StClass: String = ""
     @State private var StNum: String = ""
     @State private var StPhoneNumber: String = ""
+    @State private var StImageUrl: String = ""
     
     var body: some View {
         VStack {
@@ -30,11 +32,20 @@ struct StudentInfoView: View {
                     .cornerRadius(15)
                 
                 VStack(spacing: 10) {
-                    Image(systemName: "person.circle.fill")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 200)
-                        .padding()
+                    if let url = URL(string: StImageUrl) {
+                        WebImage(url: url)
+                            .resizable()
+                            .frame(width: 200, height: 200)
+                            .cornerRadius(100)
+                    } else {
+                        Image(systemName: "person.circle.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 200, height: 200)
+                            .padding()
+                    }
+                    Spacer()
+                        .frame(height:10)
                     
                     Text(StName)
                         .font(.system(size: 30, weight: .bold))
@@ -67,12 +78,13 @@ struct StudentInfoView: View {
                     self.StNum = "번호 정보 없음"
                 }
                 self.StPhoneNumber = info["phoneNum"] as? String ?? "전화번호 없음"
+                self.StImageUrl = info["imgUrl"] as? String ?? ""
             }
         }
     }
 }
 
 #Preview {
-    StudentInfoView(studentInfo: ["studentName": "김주환", "studentId": "2307", "phoneNum": "010-7777-7777"])
+    StudentInfoView(studentInfo: ["studentName": "김주환", "studentId": "2307", "phoneNum": "010-7777-7777", "imgUrl": "https://keepgoingbucket.s3.ap-northeast-2.amazonaws.com/picture/김주환.jpeg"])
 }
 
