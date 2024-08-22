@@ -92,7 +92,7 @@ struct MypageView: View {
                         Image(systemName: "person.circle.fill")
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 112)
+                            .frame(width: 90)
                         Spacer()
                             .frame(width: 20)
                         VStack(alignment: .leading, spacing: 10) {

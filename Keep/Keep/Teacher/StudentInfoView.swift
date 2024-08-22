@@ -58,6 +58,7 @@ struct StudentInfoView: View {
                 }
             }
         }
+        .padding(.bottom,50)
         .onAppear {
             if let info = studentInfo {
                 self.StName = info["studentName"] as? String ?? "학생 이름 없음"

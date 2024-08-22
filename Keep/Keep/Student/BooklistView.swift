@@ -8,6 +8,7 @@
 import SwiftUI
 import Alamofire
 import SDWebImageSwiftUI
+import UserNotifications
 
 // 책 데이터 모델
 struct Book: Codable, Identifiable {
@@ -111,7 +112,7 @@ struct BooklistView: View {
         VStack {
             Text("나의 대출 목록")
                 .font(.system(size: 28, weight: .bold))
-                .padding(.trailing, 170)
+                .padding(.trailing, 155)
             Rectangle()
                 .frame(height: 0.5)
                 .foregroundColor(.gray)
