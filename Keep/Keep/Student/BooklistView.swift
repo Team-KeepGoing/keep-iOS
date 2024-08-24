@@ -85,10 +85,10 @@ class BookViewModel: ObservableObject {
                 
                 do {
                     let decoder = JSONDecoder()
-                    // 날짜 포맷을 직접 처리하기 때문에 ISO 8601 디코딩 전략을 사용하지 않음
                     let decodedResponse = try decoder.decode(ResponseData.self, from: data)
                     DispatchQueue.main.async {
                         self.books = decodedResponse.data
+                        self.scheduleReturnNotifications() // 알림 예약
                         print("받은 책 목록: \(self.books)")
                     }
                 } catch {
@@ -101,8 +101,47 @@ class BookViewModel: ObservableObject {
             }
         }
     }
+    
+    // 반납 예정일에 알림 예약
+    func scheduleReturnNotifications() {
+        for book in books {
+            scheduleNotification(for: book)
+        }
+    }
+    
+    // 반납 알림을 특정 날짜에 예약
+    private func scheduleNotification(for book: Book) {
+        guard let returnDate = calculateReturnDate(book.rentDate) else { return }
+        
+        let content = UNMutableNotificationContent()
+        content.title = "반납 알림"
+        content.body = "\(book.bookName)의 반납일입니다. 책을 반납하세요."
+        content.sound = UNNotificationSound.default
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: returnDate, repeats: false)
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("알림 예약 실패: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    // 반납 예정일을 계산하여 알림 트리거 날짜 구성
+    private func calculateReturnDate(_ rentDate: String) -> DateComponents? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
+        
+        guard let rentDateObj = dateFormatter.date(from: rentDate) else { return nil }
+        let returnDate = Calendar.current.date(byAdding: .day, value: 7, to: rentDateObj)!
+        
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: returnDate)
+        
+        return components
+    }
 }
-
 
 // 책 목록을 보여주는 SwiftUI 뷰
 struct BooklistView: View {
@@ -172,7 +211,7 @@ struct BookRowView: View {
                 VStack(alignment: .leading, spacing: 3) {
                     Text("반납 예정일")
                         .font(.system(size: 12))
-                    Text(calculateReturnDate(book.rentDate))
+                    Text(calculateReturnDateString(book.rentDate))
                         .font(.system(size: 12))
                         .foregroundColor(.red)
                 }
@@ -198,7 +237,7 @@ struct BookRowView: View {
         return date.components(separatedBy: "T").first ?? date
     }
     
-    private func calculateReturnDate(_ rentDate: String) -> String {
+    private func calculateReturnDateString(_ rentDate: String) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
         
@@ -213,8 +252,6 @@ struct BookRowView: View {
         return rentDate.components(separatedBy: "T").first ?? rentDate
     }
 }
-
-
 
 #Preview {
     BooklistView()
