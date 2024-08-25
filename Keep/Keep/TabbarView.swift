@@ -37,7 +37,6 @@ struct TabbarView: View {
                     Text("MY")
                 }
         }
-        
         .navigationBarBackButtonHidden(true)
     }
 }
