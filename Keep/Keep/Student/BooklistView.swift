@@ -10,7 +10,6 @@ import Alamofire
 import SDWebImageSwiftUI
 import UserNotifications
 
-// 책 데이터 모델
 struct Book: Codable, Identifiable {
     let id: Int
     let bookName: String
