@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UserNotifications
 
 @main
 struct KeepApp: App {
@@ -19,6 +20,17 @@ struct KeepApp: App {
         }
     }
 }
+
+func requestNotificationPermission() {
+    UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
+        if granted {
+            print("알림 권한이 허용되었습니다.")
+        } else {
+            print("알림 권한이 거부되었습니다.")
+        }
+    }
+}
+
 
 
 //let headers: HTTPHeaders = ["Authorization": "Bearer \(TokenManager.shared.token ?? "")"]
