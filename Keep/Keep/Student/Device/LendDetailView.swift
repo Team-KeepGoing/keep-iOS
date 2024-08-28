@@ -13,43 +13,93 @@ struct LendDetailView: View {
     let imgUrl: String?
     let status: String
     
+    // 상수 정의
+    private let titleFontSize: CGFloat = 28
+    private let deviceNameFontSize: CGFloat = 27
+    private let statusFontSize: CGFloat = 19
+    private let rectangleWidth: CGFloat = 230
+    private let rectangleHeight: CGFloat = 45
+    
     var body: some View {
-        Text("기기 대여")
-            .font(.system(size: 28, weight: .semibold))
-            .offset(x: -100, y: -90)
         VStack(spacing: 10) {
-            if let imgUrl = imgUrl, let url = URL(string: imgUrl) {
-                WebImage(url: url)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 200)
-            } else {
-                Image("placeholder")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 200)
-            }
+            headerView
+            
+            deviceImageView
+            
             Text(deviceName)
-                .font(.system(size: 27, weight: .semibold))
+                .font(.system(size: deviceNameFontSize, weight: .semibold))
             
             Spacer()
                 .frame(height: 120)
             
-            Rectangle()
-                .frame(width: 230, height: 45)
-                .cornerRadius(12)
-                .foregroundColor(status == "RENTED" ? .red : (status == "UNAVAILABLE" ? .unavcolor : .blue))
-                .overlay(
-                    Text(status == "RENTED" ? "사용 중" : (status == "UNAVAILABLE" ? "대여 불가" : "대여 가능"))
-                        .font(.system(size: 19, weight: .medium))
-                        .foregroundColor(.white)
-                )
+            statusView
         }
-        .frame(height:400)
+        .frame(height: 400)
         .padding()
+    }
+    
+    // 헤더 뷰
+    private var headerView: some View {
+        Text("기기 대여")
+            .font(.system(size: titleFontSize, weight: .semibold))
+            .offset(x: -100, y: -90)
+    }
+    
+    // 기기 이미지 뷰
+    @ViewBuilder
+    private var deviceImageView: some View {
+        if let imgUrl = imgUrl, let url = URL(string: imgUrl) {
+            WebImage(url: url)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 200)
+        } else {
+            Image("placeholder")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 200)
+        }
+    }
+    
+    // 상태 표시 뷰
+    private var statusView: some View {
+        Rectangle()
+            .frame(width: rectangleWidth, height: rectangleHeight)
+            .cornerRadius(12)
+            .foregroundColor(statusColor)
+            .overlay(
+                Text(statusText)
+                    .font(.system(size: statusFontSize, weight: .medium))
+                    .foregroundColor(.white)
+            )
+    }
+    
+    // 상태에 따른 색상 반환
+    private var statusColor: Color {
+        switch status {
+        case "RENTED":
+            return .red
+        case "UNAVAILABLE":
+            return Color("unavcolor") // 사용자 정의 색상
+        default:
+            return .blue
+        }
+    }
+    
+    // 상태에 따른 텍스트 반환
+    private var statusText: String {
+        switch status {
+        case "RENTED":
+            return "사용 중"
+        case "UNAVAILABLE":
+            return "대여 불가"
+        default:
+            return "대여 가능"
+        }
     }
 }
 
 #Preview {
     LendDetailView(deviceName: "노트북", imgUrl: nil, status: "RENTED")
 }
+
