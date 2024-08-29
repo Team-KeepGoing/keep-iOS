@@ -47,6 +47,9 @@ struct ContentView: View {
                 }
             }
         }
+        .onAppear {
+            requestNotificationPermission()
+        }
     }
 }
 

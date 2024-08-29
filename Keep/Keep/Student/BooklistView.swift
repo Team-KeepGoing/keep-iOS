@@ -108,16 +108,22 @@ class BookViewModel: ObservableObject {
         }
     }
     
-    // 반납 알림을 특정 날짜에 예약
+    // 반납 알림을 특정 날짜에 예약 (반납일 하루 전에 알림)
     private func scheduleNotification(for book: Book) {
         guard let returnDate = calculateReturnDate(book.rentDate) else { return }
         
+        // 하루 전으로 날짜 조정
+        var notificationDate = Calendar.current.date(from: returnDate)!
+        notificationDate = Calendar.current.date(byAdding: .day, value: -1, to: notificationDate)!
+        
+        let adjustedComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: notificationDate)
+        
         let content = UNMutableNotificationContent()
         content.title = "반납 알림"
-        content.body = "\(book.bookName)의 반납일입니다. 책을 반납하세요."
+        content.body = "\(book.bookName)의 반납일이 다가오고 있습니다. 내일까지 책을 반납하세요."
         content.sound = UNNotificationSound.default
         
-        let trigger = UNCalendarNotificationTrigger(dateMatching: returnDate, repeats: false)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: adjustedComponents, repeats: false)
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
         
         UNUserNotificationCenter.current().add(request) { error in
