@@ -10,7 +10,7 @@ import UserNotifications
 
 @main
 struct KeepApp: App {
-    
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     let tokenManager = TokenManager.shared
     
     var body: some Scene {
@@ -18,6 +18,13 @@ struct KeepApp: App {
             ContentView()
                 .environmentObject(TokenManager.shared)
         }
+    }
+}
+
+class AppDelegate: NSObject, UIApplicationDelegate {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        requestNotificationPermission()
+        return true
     }
 }
 

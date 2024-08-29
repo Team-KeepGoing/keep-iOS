@@ -114,7 +114,7 @@ class BookViewModel: ObservableObject {
         
         // 하루 전으로 날짜 조정
         var notificationDate = Calendar.current.date(from: returnDate)!
-        notificationDate = Calendar.current.date(byAdding: .day, value: -1, to: notificationDate)!
+        notificationDate = Calendar.current.date(byAdding: .hour, value: -24, to: notificationDate)!
         
         let adjustedComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: notificationDate)
         
@@ -129,9 +129,12 @@ class BookViewModel: ObservableObject {
         UNUserNotificationCenter.current().add(request) { error in
             if let error = error {
                 print("알림 예약 실패: \(error.localizedDescription)")
+            } else {
+                print("알림 예약 성공")
             }
         }
     }
+
     
     // 반납 예정일을 계산하여 알림 트리거 날짜 구성
     private func calculateReturnDate(_ rentDate: String) -> DateComponents? {
