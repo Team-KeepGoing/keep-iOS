@@ -108,22 +108,16 @@ class BookViewModel: ObservableObject {
         }
     }
     
-    // 반납 알림을 특정 날짜에 예약 (반납일 하루 전에 알림)
+    // 반납 알림을 특정 날짜에 예약 (반납일 전날 오후 5시 55분에 알림)
     private func scheduleNotification(for book: Book) {
-        guard let returnDate = calculateReturnDate(book.rentDate) else { return }
-        
-        // 하루 전으로 날짜 조정
-        var notificationDate = Calendar.current.date(from: returnDate)!
-        notificationDate = Calendar.current.date(byAdding: .hour, value: -24, to: notificationDate)!
-        
-        let adjustedComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: notificationDate)
+        guard let returnDateComponents = calculateReturnDate(book.rentDate) else { return }
         
         let content = UNMutableNotificationContent()
         content.title = "반납 알림"
         content.body = "\(book.bookName)의 반납일이 다가오고 있습니다. 내일까지 책을 반납하세요."
         content.sound = UNNotificationSound.default
         
-        let trigger = UNCalendarNotificationTrigger(dateMatching: adjustedComponents, repeats: false)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: returnDateComponents, repeats: false)
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
         
         UNUserNotificationCenter.current().add(request) { error in
@@ -134,22 +128,27 @@ class BookViewModel: ObservableObject {
             }
         }
     }
-
     
-    // 반납 예정일을 계산하여 알림 트리거 날짜 구성
-    private func calculateReturnDate(_ rentDate: String) -> DateComponents? {
+    func calculateReturnDate(_ rentDate: String) -> DateComponents? {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
         
         guard let rentDateObj = dateFormatter.date(from: rentDate) else { return nil }
-        let returnDate = Calendar.current.date(byAdding: .day, value: 7, to: rentDateObj)!
+        guard let returnDate = Calendar.current.date(byAdding: .day, value: 7, to: rentDateObj) else { return nil }
+        
+        var notificationDate = Calendar.current.date(byAdding: .day, value: -1, to: returnDate)!
+        notificationDate = Calendar.current.date(bySettingHour: 18, minute: 18, second: 0, of: notificationDate)!
+        
+        print("Notification Date: \(notificationDate)")
         
         let calendar = Calendar.current
-        let components = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: returnDate)
+        let components = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: notificationDate)
         
         return components
     }
 }
+
+
 
 // 책 목록을 보여주는 SwiftUI 뷰
 struct BooklistView: View {
@@ -261,6 +260,9 @@ struct BookRowView: View {
     }
 }
 
+
+
 #Preview {
     BooklistView()
 }
+
