@@ -81,6 +81,7 @@ struct HomeView: View {
     @State private var borrowedBooks: [BorrowedBookModel] = []
     @State private var devices: [DeviceModel] = []
     @State private var errorMessage: String?
+    @State private var showLateWarning = false
     
     var body: some View {
         NavigationView {
@@ -254,6 +255,11 @@ struct HomeView: View {
                 print("User Info API Error: \(error.localizedDescription)")
                 self.errorMessage = "User Info API Error: \(error.localizedDescription)"
             }
+        }
+    }
+    func checkLateReturns() {
+        if borrowedBooks.contains(where: { $0.state == "Late" }) {
+            showLateWarning = true
         }
     }
 }
