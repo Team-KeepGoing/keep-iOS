@@ -202,7 +202,16 @@ struct HomeView: View {
                 }
                 .onAppear {
                     fetchData()
+                    checkLateReturns()
+                    showLateWarning = true
                 }
+            }
+            .alert(isPresented: $showLateWarning) {
+                Alert(
+                    title: Text("경고"),
+                    message: Text("반납이 지연된 책이 있습니다."),
+                    dismissButton: .default(Text("확인"))
+                )
             }
         }
     }
