@@ -55,6 +55,20 @@ struct StudentInfoView: View {
                     
                     Text(StPhoneNumber)
                         .font(.system(size: 20, weight: .thin))
+                    
+                    HStack(spacing: 20) {
+                        if let phoneURL = URL(string: "tel:\(StPhoneNumber)"),
+                           let smsURL = URL(string: "sms:\(StPhoneNumber)") {
+                            Link("전화 걸기", destination: phoneURL)
+                                .font(.system(size: 20, weight: .thin))
+                            
+                            Link("문자 보내기", destination: smsURL)
+                                .font(.system(size: 20, weight: .thin))
+                        } else {
+                            Text(StPhoneNumber)
+                                .font(.system(size: 20, weight: .thin))
+                        }
+                    }
                 }
             }
         }
