@@ -220,7 +220,7 @@ struct HomeView: View {
                                        authorName: lateAuthorName,
                                        rentDate: lateRentDate,
                                        returnDate: lateReturnDate,
-                                       imageUrl: lateImageUrl) // 이미지 URL 추가
+                                       imageUrl: lateImageUrl)
                 }
             }
         }
@@ -228,28 +228,36 @@ struct HomeView: View {
     
     func checkLateReturns() {
         let today = Calendar.current.startOfDay(for: Date())
-        let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: today)!
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
 
         for book in borrowedBooks {
-            if let rentDate = getReturnDate(from: book.rentDate) {
-                let returnDate = Calendar.current.date(byAdding: .day, value: 7, to: rentDate)
-
-                if let returnDate = returnDate, Calendar.current.isDate(returnDate, inSameDayAs: tomorrow) {
-                    let formattedRentDate = formatDate(rentDate)
-                    let formattedReturnDate = formatDate(returnDate)
-
+            if let rentDateObj = formatter.date(from: book.rentDate) {
+                let returnDate = Calendar.current.date(byAdding: .day, value: 7, to: rentDateObj)
+                let returnDateStartOfDay = Calendar.current.startOfDay(for: returnDate ?? Date())
+                
+                // 반납 예정일이 오늘 날짜보다 하루 전인지 확인
+                let dayBeforeReturnDate = Calendar.current.date(byAdding: .day, value: -1, to: returnDateStartOfDay)
+                
+                if let dayBeforeReturnDate = dayBeforeReturnDate, Calendar.current.isDate(dayBeforeReturnDate, inSameDayAs: today) {
+                    print("Found late return: \(book.bookName), \(book.rentDate) -> \(returnDateStartOfDay)")
+                    
+                    let formattedReturnDate = formatDate(returnDateStartOfDay)
+                    
                     lateBookName = book.bookName
                     lateAuthorName = book.writer ?? "작가 미상"
-                    lateRentDate = formattedRentDate
+                    lateRentDate = formatDate(rentDateObj)
                     lateReturnDate = formattedReturnDate
-                    lateImageUrl = book.imageUrl // 이미지 URL 업데이트
-
+                    lateImageUrl = book.imageUrl
+                    
                     showLateWarning = true
                     break
                 }
             }
         }
     }
+
+
     
     func formatDate(_ date: Date) -> String {
         let formatter = DateFormatter()
@@ -327,6 +335,7 @@ struct HomeView: View {
         
     }
 }
+
 
 
 #Preview {
