@@ -14,6 +14,7 @@ struct BorrowedBookModel: Identifiable {
     let imageUrl: String?
     let rentDate: String
     let state: String
+    let writer: String?
 }
 
 struct DeviceModel: Identifiable, Codable {
@@ -78,10 +79,17 @@ struct LendStatusViewModel: View {
 }
 
 struct HomeView: View {
+    
     @State private var borrowedBooks: [BorrowedBookModel] = []
     @State private var devices: [DeviceModel] = []
     @State private var errorMessage: String?
     @State private var showLateWarning = false
+    
+    @State private var lateBookName: String = ""
+    @State private var lateAuthorName: String = ""
+    @State private var lateRentDate: String = ""
+    @State private var lateReturnDate: String = ""
+    @State private var lateImageUrl: String? = nil
     
     var body: some View {
         NavigationView {
@@ -98,7 +106,6 @@ struct HomeView: View {
                             .scaledToFit()
                             .frame(width: 116,height:57)
                             .offset(x: -110, y: -300)
-                        
                         
                         VStack(spacing: 0) {
                             Rectangle()
@@ -204,14 +211,61 @@ struct HomeView: View {
                     .onAppear {
                         fetchData()
                         checkLateReturns()
-                        showLateWarning = true
                     }
                 }
+                
                 if showLateWarning {
-                    LendLateWaringView(isShowing: $showLateWarning)
+                    LendLateWaringView(isShowing: $showLateWarning,
+                                       bookName: lateBookName,
+                                       authorName: lateAuthorName,
+                                       rentDate: lateRentDate,
+                                       returnDate: lateReturnDate,
+                                       imageUrl: lateImageUrl) // 이미지 URL 추가
                 }
             }
         }
+    }
+    
+    func checkLateReturns() {
+        let today = Calendar.current.startOfDay(for: Date())
+        let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: today)!
+
+        for book in borrowedBooks {
+            if let rentDate = getReturnDate(from: book.rentDate) {
+                let returnDate = Calendar.current.date(byAdding: .day, value: 7, to: rentDate)
+
+                if let returnDate = returnDate, Calendar.current.isDate(returnDate, inSameDayAs: tomorrow) {
+                    let formattedRentDate = formatDate(rentDate)
+                    let formattedReturnDate = formatDate(returnDate)
+
+                    lateBookName = book.bookName
+                    lateAuthorName = book.writer ?? "작가 미상"
+                    lateRentDate = formattedRentDate
+                    lateReturnDate = formattedReturnDate
+                    lateImageUrl = book.imageUrl // 이미지 URL 업데이트
+
+                    showLateWarning = true
+                    break
+                }
+            }
+        }
+    }
+    
+    func formatDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy.MM.dd"
+        return formatter.string(from: date)
+    }
+    
+    func getReturnDate(from rentDate: String) -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
+        
+        if let rentDateObj = dateFormatter.date(from: rentDate) {
+            return Calendar.current.date(byAdding: .day, value: 7, to: rentDateObj)
+        }
+        
+        return nil
     }
     
     func fetchData() {
@@ -251,7 +305,14 @@ struct HomeView: View {
                     let userInfoResponse = try JSONDecoder().decode(UserInfoResponse.self, from: data)
                     DispatchQueue.main.async {
                         self.borrowedBooks = userInfoResponse.borrowedBooks.map {
-                            BorrowedBookModel(id: $0.id, bookName: $0.bookName, imageUrl: $0.imageUrl, rentDate: $0.rentDate, state: $0.state)
+                            BorrowedBookModel(
+                                id: $0.id,
+                                bookName: $0.bookName,
+                                imageUrl: $0.imageUrl,
+                                rentDate: $0.rentDate,
+                                state: $0.state,
+                                writer: $0.writer ?? "작가 미상"
+                            )
                         }
                     }
                 } catch {
@@ -263,13 +324,10 @@ struct HomeView: View {
                 self.errorMessage = "User Info API Error: \(error.localizedDescription)"
             }
         }
-    }
-    func checkLateReturns() {
-        if borrowedBooks.contains(where: { $0.state == "Late" }) {
-            showLateWarning = true
-        }
+        
     }
 }
+
 
 #Preview {
     HomeView()

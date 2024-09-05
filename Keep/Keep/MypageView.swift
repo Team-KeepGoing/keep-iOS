@@ -15,6 +15,7 @@ struct BorrowedBook: Codable {
     let imageUrl: String?  // 이미지 URL은 옵셔널로 설정합니다.
     let rentDate: String  // 예시에서는 String으로 설정되어 있지만, Date로 설정하는 것이 좋습니다.
     let state: String
+    let writer: String?
 }
 
 // JSON 응답 구조체 정의
