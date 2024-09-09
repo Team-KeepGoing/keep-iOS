@@ -17,24 +17,27 @@ struct KeepApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(TokenManager.shared)
+                .onAppear {
+                    UNUserNotificationCenter.current().delegate = appDelegate
+                }
         }
     }
 }
 
-class AppDelegate: NSObject, UIApplicationDelegate {
+class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        requestNotificationPermission()
+        UNUserNotificationCenter.current().delegate = self
         return true
     }
-}
-
-func requestNotificationPermission() {
-    UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
-        if granted {
-            print("알림 권한이 허용되었습니다.")
-        } else {
-            print("알림 권한이 거부되었습니다.")
-        }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.banner, .sound])
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        // 알림 클릭 시 처리 로직
+        completionHandler()
     }
 }
 

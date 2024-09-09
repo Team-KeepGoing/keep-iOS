@@ -7,6 +7,7 @@
 import SwiftUI
 import Alamofire
 import SDWebImageSwiftUI
+import UserNotifications
 
 struct BorrowedBookModel: Identifiable {
     let id: Int
@@ -211,6 +212,7 @@ struct HomeView: View {
                     .onAppear {
                         fetchData()
                         checkLateReturns()
+                        NotificationManager.shared.requestNotificationAuthorization()
                     }
                 }
                 
@@ -251,12 +253,34 @@ struct HomeView: View {
                     lateImageUrl = book.imageUrl
                     
                     showLateWarning = true
+                    
+                    scheduleNotification(for: book.bookName, on: returnDateStartOfDay)
+                    
                     break
                 }
             }
         }
     }
-
+    
+    func scheduleNotification(for bookName: String, on returnDate: Date) {
+        let content = UNMutableNotificationContent()
+        content.title = "연체 예정 알림"
+        content.body = "도서 '\(bookName)'가 곧 연체될 예정입니다. 반납일을 확인하세요."
+        content.sound = .default
+        
+        let triggerDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: returnDate)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
+        
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("Failed to schedule notification: \(error.localizedDescription)")
+            } else {
+                print("Notification scheduled for \(bookName) on \(returnDate).")
+            }
+        }
+    }
 
     
     func formatDate(_ date: Date) -> String {

@@ -36,6 +36,7 @@
 		4DD9FB792B9FD95100EF5DFC /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD9FB782B9FD95100EF5DFC /* LoginView.swift */; };
 		4DD9FB7B2B9FD95B00EF5DFC /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD9FB7A2B9FD95B00EF5DFC /* SignupView.swift */; };
 		4DD9FB7D2BA2724200EF5DFC /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD9FB7C2BA2724200EF5DFC /* ColorExtension.swift */; };
+		4DF4785C2C8ED26E0078111B /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DF4785B2C8ED26E0078111B /* NotificationManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +69,7 @@
 		4DD9FB782B9FD95100EF5DFC /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		4DD9FB7A2B9FD95B00EF5DFC /* SignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
 		4DD9FB7C2BA2724200EF5DFC /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
+		4DF4785B2C8ED26E0078111B /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +150,7 @@
 				4D013EB12C16FAA800F4E2E9 /* testView2.swift */,
 				4DAFFD562BFF56ED00B77B87 /* TokenManager.swift */,
 				4DD9FB7C2BA2724200EF5DFC /* ColorExtension.swift */,
+				4DF4785B2C8ED26E0078111B /* NotificationManager.swift */,
 				4D5E8B6E2BC37E9D00912446 /* Student */,
 				4D5E8B692BBEB98B00912446 /* Teacher */,
 				4DD9FB772B9FD92A00EF5DFC /* login & sign up */,
@@ -275,6 +278,7 @@
 				4D5E8B7A2BC380EE00912446 /* MypageView.swift in Sources */,
 				4D5E8B702BC37F2900912446 /* QrView.swift in Sources */,
 				4D5E8B782BC3804C00912446 /* LendlistView.swift in Sources */,
+				4DF4785C2C8ED26E0078111B /* NotificationManager.swift in Sources */,
 				4DD9FB682B9FD89800EF5DFC /* KeepApp.swift in Sources */,
 				4DD9FB7D2BA2724200EF5DFC /* ColorExtension.swift in Sources */,
 			);
